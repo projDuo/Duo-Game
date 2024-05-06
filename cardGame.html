@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="cardGame.css">
+</head>
+<body>
+    <div id="menu">
+        <div id="authorization">
+
+
+            <div class="formBox login">
+                <h2>Sign In</h2>
+                <form id="loginForm">
+                    <div class="inputBox">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" id="loginIn" required>
+                        <label for="login">Login</label>
+                    </div>
+                    <div class="inputBox">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" id="passwordIn" autocomplete="off" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <button type="submit" class="button" id="buttonIn">Sign In</button>
+                </form>
+                <div class="OutherInput">
+                    <p>Don't have an account? <a href="#" id="register">Register</a></p>
+                </div>
+                <div class="OutherInput">
+                    <p>Want to play as a guest? <a href="#" id="guest">Play now!</a></p>
+                </div>
+            </div>
+
+            <div class="formBox register">
+                <h2>Sign Up</h2>
+                <form id="registrationForm">
+                    <div class="inputBox">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" id="loginUp" required>
+                        <label for="login">Login</label>
+                    </div>
+                    <div class="inputBox">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" id="passwordUp" autocomplete="off" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="inputBox">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" id="confirmPassword" autocomplete="off">
+                        <label for="confirmPassword" id="correctPassword">Confirm Password</label>
+                    </div>
+                    <button type="submit" class="button" id="buttonUp">Sign Up</button>
+                </form>
+                <div class="OutherInput">
+                    <p>Already have an account? <a href="#" id="signIn">Login</a></p>
+                </div>
+            </div>
+
+
+            <div class="formBox guest">
+                <h2>Guest</h2>
+                <form id="guestForm">
+                    <div class="inputBox">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" id="loginGu" required>
+                        <label for="login">Login</label>
+                    </div>
+                    <button type="submit" class="button" id="buttonGu">Welcome</button>
+                </form>
+                <div class="OutherInput">
+                    <p>Sign in to your account? <a href="#" id="signIns">Login</a></p>
+                </div>
+            </div>
+            
+        </div>
+
+
+        <div id="menuUser">
+            <div id="tabs">
+                <div id="user">Yaroslav</div>
+                <div id="headers">
+                    <div class="position">
+                        <div class="lateralLine"></div>
+                        <div>Rooms</div>
+                    </div>
+                    <div class="position">
+                        <div class="lateralLine"></div>
+                        <div>Friends</div>
+                    </div>
+                    <div class="position">
+                        <div class="lateralLine"></div>
+                        <div>Rating</div>
+                    </div>
+                    <div class="position">
+                        <div class="lateralLine"></div>
+                        <div>Setting</div>
+                    </div>
+                </div>
+            </div>
+            <div id="information"></div>
+        </div>
+    </div>
+    <!-- <div id="game"></div> -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="cardGame.js"></script>
+</body>
+</html>
