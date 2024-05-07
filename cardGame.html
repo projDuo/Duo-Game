@@ -23,7 +23,7 @@
                     <div class="inputBox">
                         <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                         <input type="password" id="passwordIn" autocomplete="off" required>
-                        <label for="password">Password</label>
+                        <label for="password" id="checkPassword">Password</label>
                     </div>
                     <button type="submit" class="button" id="buttonIn">Sign In</button>
                 </form>
@@ -34,7 +34,7 @@
                     <p>Want to play as a guest? <a href="#" id="guest">Play now!</a></p>
                 </div>
             </div>
-
+ 
             <div class="formBox register">
                 <h2>Sign Up</h2>
                 <form id="registrationForm">
@@ -50,7 +50,7 @@
                     </div>
                     <div class="inputBox">
                         <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                        <input type="password" id="confirmPassword" autocomplete="off">
+                        <input type="password" id="confirmPassword" autocomplete="off" required>
                         <label for="confirmPassword" id="correctPassword">Confirm Password</label>
                     </div>
                     <button type="submit" class="button" id="buttonUp">Sign Up</button>
@@ -79,29 +79,36 @@
         </div>
 
 
-        <div id="menuUser">
+        <div id="menuUser" class="active">
             <div id="tabs">
                 <div id="user">Yaroslav</div>
                 <div id="headers">
                     <div class="position">
-                        <div class="lateralLine"></div>
-                        <div>Rooms</div>
+                        <span class="lateralLine"></span>
+                        <p>Rooms</p>
                     </div>
                     <div class="position">
-                        <div class="lateralLine"></div>
-                        <div>Friends</div>
+                        <span class="lateralLine"></span>
+                        <p>Friends</p>
                     </div>
                     <div class="position">
-                        <div class="lateralLine"></div>
-                        <div>Rating</div>
+                        <span class="lateralLine"></span>
+                        <p>Rating</p>
                     </div>
                     <div class="position">
-                        <div class="lateralLine"></div>
-                        <div>Setting</div>
+                        <span class="lateralLine"></span>
+                        <p>Setting</p>
                     </div>
                 </div>
             </div>
-            <div id="information"></div>
+            <div id="information">
+                <div>
+                    <input type="text" id="roomRo">
+                    <input type="text" id="passwordRo">
+                    <input type="text" id="playerRo">
+                </div>
+                <input type="button" value="public" id="room">
+            </div>
         </div>
     </div>
     <!-- <div id="game"></div> -->

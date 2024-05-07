@@ -1,90 +1,197 @@
+//TODO authorization
+// const token = ""
 const authorization = document.getElementById("authorization")
-const register = document.getElementById("register")
-const signIn = document.getElementById("signIn")
-const guest = document.getElementById("guest")
-const signIns = document.getElementById("signIns")
 
-register.addEventListener("click", function(){
+document.getElementById("register").addEventListener("click", function(){
     authorization.classList.add("active")
 })
-
-signIn.addEventListener("click", function(){
+document.getElementById("signIn").addEventListener("click", function(){
     authorization.classList.remove("active")
 })
-
-guest.addEventListener("click", function(){
+document.getElementById("guest").addEventListener("click", function(){
     authorization.classList.add("activeGuest")
 })
-
-signIns.addEventListener("click", function(){
+document.getElementById("signIns").addEventListener("click", function(){
     authorization.classList.remove("activeGuest")
 })
 
-// document.getElementById("registrationForm").addEventListener('submit', function() {
-//     const login = document.getElementById("loginUp").value;
-//     const password = document.getElementById("passwordUp").value;
-//     const confirmPassword = document.getElementById("confirmPassword").value
-//     const correctPassword = document.getElementById("correctPassword")
 
-//     if(password !== confirmPassword){
-//         correctPassword.innerText = "Please, repeat your password correctly"
-//         return;
+
+
+
+
+
+
+// function setCookie(cname, cvalue, exdays) {
+//     const d = new Date();
+//     d.setTime(d.getTime() + (exdays*24*60*60*1000));
+//     let expires = "expires="+ d.toUTCString();
+//     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+//   }
+
+//   function getCookie(cname) {
+//     let name = cname + "=";
+//     let decodedCookie = decodeURIComponent(document.cookie);
+//     let ca = decodedCookie.split(';');
+//     for(let i = 0; i <ca.length; i++) {
+//       let c = ca[i];
+//       while (c.charAt(0) == ' ') {
+//         c = c.substring(1);
+//       }
+//       if (c.indexOf(name) == 0) {
+//         return c.substring(name.length, c.length);
+//       }
 //     }
+//     return "";
+//   }
 
-//     fetch("https://duo.shuttleapp.rs/api/accounts/"+ login,{method: "POST", headers:{"password": password}})
-//     .then(response => {
-//         if (response.ok) {
-//             console.log("Registration successful");
-//         } else {
-//             console.error("Registration failed");
-//         }
-//     })
-//     .catch(error => {
-//         console.error("Error:", error);
-//     });
-// });
-
-
-// document.getElementById("loginForm").addEventListener('submit', function() {
-//     const login = document.getElementById("loginIn").value;
-//     const password = document.getElementById("passwordIn").value;
-
-//     fetch("https://duo.shuttleapp.rs/api/accounts/"+ login,{method: "GET", headers:{"password": password}})
-//     .then(response => {
-//         console.log(response.text())
-//         if (response.ok) {
-//             console.log("Registration successful");
-//         } else {
-//             console.error("Registration failed");
-//         }
-//     })
-//     .catch(error => {
-//         console.error("Error:", error);
-//     });
-// });
+//   function checkCookie() {
+//     let username = getCookie("username");
+//     if (username != "") {
+//      alert("Welcome again " + username);
+//     } else {
+//       username = prompt("Please enter your name:", "");
+//       if (username != "" && username != null) {
+//         setCookie("username", username, 365);
+//       }
+//     }
+//   }
 
 
-// document.getElementById("guestForm").addEventListener('submit', function() {
-//     const login = document.getElementById("loginGu").value;
 
-//     fetch("https://duo.shuttleapp.rs/api/accounts/"+ login,{method: "POST"})
-//     .then(response => {
-//         if (response.ok) {
-//             console.log("Registration successful");
-//         } else {
-//             console.error("Registration failed");
-//         }
-//     })
-//     .catch(error => {
-//         console.error("Error:", error);
-//     });
-// });
 
-const menu = document.getElementById("menu")
-const menuUser = document.getElementById("menuUser")
 
-document.getElementById("buttonIn").addEventListener("click", function(){
-    authorization.style.display = "none"
-    menu.style.width = "750px"
-    menuUser.style.display = "flex"
+
+
+
+
+
+
+function activeMenu() {
+    document.getElementById("authorization").style.display = "none";
+    document.getElementById("menu").style.width = "750px";
+    document.getElementById("menuUser").classList.add("active");
+}
+//! Register
+document.getElementById("loginUp").addEventListener("click", function(){
+    const login = document.getElementById("loginUp")
+    if (login.value === "This login is already taken") {
+        login.value = "";
+    }
+});
+document.getElementById("registrationForm").addEventListener('submit', function(event){
+    event.preventDefault();
+    const login = document.getElementById("loginUp");
+    const password = document.getElementById("passwordUp");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const correctPassword = document.getElementById("correctPassword")
+
+    if(password.value !== confirmPassword.value){
+        correctPassword.innerText = "Please, repeat your password correctly"
+        return;
+    }
+    const data = {password: password.value};
+    const jsonBody = JSON.stringify(data);
+
+    fetch("https://duo.shuttleapp.rs/api/accounts/"+ login.value,{method: "POST", headers:{"Content-type": "Application/json"}, body: jsonBody})
+    .then(response => {
+        if(response.status === 201){
+            response.text().then(result => {
+                console.log(result)
+            })
+            activeMenu();
+        }else if(response.status === 409){
+            login.value = "This login is already taken";
+            password.value = "";
+            confirmPassword.value = "";
+        }else if(response.status === 502){
+            login.value = "Server dead";
+            password.value = "Server dead";
+            confirmPassword.value = "Server dead";
+        }else{
+            console.log("Unknown error")
+        }
+    })
+});
+// //! Register
+// //? Login
+document.getElementById("loginIn").addEventListener("click", function(){
+    const login = document.getElementById("loginIn")
+    if (login.value === "This account does not exist") {
+        login.value = "";
+    }
 })
+document.getElementById("loginForm").addEventListener('submit', function(event){
+    event.preventDefault();
+    const login = document.getElementById("loginIn");
+    const password = document.getElementById("passwordIn");
+
+    fetch("https://duo.shuttleapp.rs/api/accounts/"+ login.value,{method: "GET", headers:{"password": password.value}})
+    .then(response => {
+        if(response.status === 403){
+            document.getElementById("checkPassword").innerText = "Invalid password, please try again"
+        }else if(response.status === 404){
+            login.value = "This account does not exist"
+            password.value = ""
+        }else if(response.status === 502){
+            login.value = "Server dead";
+            password.value = "Server dead";
+        }else if(response.status === 200){          
+                activeMenu()
+        }else{
+            console.log("Unknown error")
+        }
+    });
+});
+// //? Login
+// //! Guest 
+document.getElementById("loginGu").addEventListener("click", function(){
+    const login = document.getElementById("loginGu")
+    if (login.value === "This login is already taken") {
+        login.value = "";
+    }
+});
+document.getElementById("guestForm").addEventListener('submit', function(event){
+    event.preventDefault();
+    const login = document.getElementById("loginGu");
+
+    fetch("https://duo.shuttleapp.rs/api/accounts/"+ login.value,{method: "POST"})
+    .then(response => {
+        if(response.status === 201){
+            activeMenu()
+        }else if(response.status === 409){
+            login.value = "This login is already taken";
+            password.value = "";
+            confirmPassword.value = "";
+        }else if(response.status === 502){
+            login.value = "Server dead";
+        }else{
+            console.log("Unknown error")
+        }
+    })
+});
+//! Guest 
+//TODO authorization
+
+// var token = "e80ae7f7-e05b-4ba8-83c3-68c98f310965"
+
+// let room = document.getElementById("room")
+
+
+// room.addEventListener("click", function(){
+//     const roomRo = document.getElementById("roomRo")
+//     const passwordRo = document.getElementById("passwordRo")
+//     const playerRo = document.getElementById("playerRo")
+
+//     const data = {public: true, password: passwordRo.value, max_players: parseInt(playerRo.value)};
+//     const jsonBody = JSON.stringify(data);
+
+
+
+//     fetch("https://duo.shuttleapp.rs/api/rooms/",{method:"POST", headers:{"Content-type": "Application/json", "Authorization": token}, body: jsonBody})
+//     .then(response => {
+//         response.text().then(result =>{
+//             console.log(result)
+//         })
+//     })
+// })
