@@ -1,5 +1,11 @@
+import { Auth } from './api/auth.js';
+import { Room } from './api/room.js';
+import { WebSocketManager } from './api/gateWay.js';
+import { activeMenu } from './api/menu.js';
+
+export const api = "https://duo.shuttleapp.rs/api"
+
 //TODO authorization
-// const token = ""
 const authorization = document.getElementById("authorization")
 
 document.getElementById("register").addEventListener("click", function(){
@@ -14,12 +20,6 @@ document.getElementById("guest").addEventListener("click", function(){
 document.getElementById("signIns").addEventListener("click", function(){
     authorization.classList.remove("activeGuest")
 })
-
-
-
-
-
-
 
 
 // function setCookie(cname, cvalue, exdays) {
@@ -57,21 +57,19 @@ document.getElementById("signIns").addEventListener("click", function(){
 //     }
 //   }
 
+export let globalToken = ""
 
 
+const url = 'wss://duo.shuttleapp.rs/api/gateway';
 
-
-
-
-
-
-
-
-function activeMenu() {
-    document.getElementById("authorization").style.display = "none";
-    document.getElementById("menu").style.width = "750px";
-    document.getElementById("menuUser").classList.add("active");
+async function gate(response) {
+    const gateway = new WebSocketManager(url)
+    await gateway.connect();
+    const token = await response.text();
+    await gateway.identify(token);
+    globalToken = token
 }
+
 //! Register
 document.getElementById("loginUp").addEventListener("click", function(){
     const login = document.getElementById("loginUp")
@@ -85,21 +83,16 @@ document.getElementById("registrationForm").addEventListener('submit', function(
     const password = document.getElementById("passwordUp");
     const confirmPassword = document.getElementById("confirmPassword");
     const correctPassword = document.getElementById("correctPassword")
+    const accountReg = new Auth(login, password)
 
     if(password.value !== confirmPassword.value){
         correctPassword.innerText = "Please, repeat your password correctly"
         return;
     }
-    const data = {password: password.value};
-    const jsonBody = JSON.stringify(data);
 
-    fetch("https://duo.shuttleapp.rs/api/accounts/"+ login.value,{method: "POST", headers:{"Content-type": "Application/json"}, body: jsonBody})
-    .then(response => {
-        if(response.status === 201){
-            response.text().then(result => {
-                console.log(result)
-            })
-            activeMenu();
+    accountReg.register().then(response => {
+        if(response.status === 200){
+            gate(response)
         }else if(response.status === 409){
             login.value = "This login is already taken";
             password.value = "";
@@ -113,8 +106,8 @@ document.getElementById("registrationForm").addEventListener('submit', function(
         }
     })
 });
-// //! Register
-// //? Login
+//! Register
+//? Login
 document.getElementById("loginIn").addEventListener("click", function(){
     const login = document.getElementById("loginIn")
     if (login.value === "This account does not exist") {
@@ -125,9 +118,9 @@ document.getElementById("loginForm").addEventListener('submit', function(event){
     event.preventDefault();
     const login = document.getElementById("loginIn");
     const password = document.getElementById("passwordIn");
+    const accountLog = new Auth(login, password)
 
-    fetch("https://duo.shuttleapp.rs/api/accounts/"+ login.value,{method: "GET", headers:{"password": password.value}})
-    .then(response => {
+    accountLog.auth().then(response => {
         if(response.status === 403){
             document.getElementById("checkPassword").innerText = "Invalid password, please try again"
         }else if(response.status === 404){
@@ -136,62 +129,135 @@ document.getElementById("loginForm").addEventListener('submit', function(event){
         }else if(response.status === 502){
             login.value = "Server dead";
             password.value = "Server dead";
-        }else if(response.status === 200){          
-                activeMenu()
-        }else{
-            console.log("Unknown error")
-        }
-    });
-});
-// //? Login
-// //! Guest 
-document.getElementById("loginGu").addEventListener("click", function(){
-    const login = document.getElementById("loginGu")
-    if (login.value === "This login is already taken") {
-        login.value = "";
-    }
-});
-document.getElementById("guestForm").addEventListener('submit', function(event){
-    event.preventDefault();
-    const login = document.getElementById("loginGu");
-
-    fetch("https://duo.shuttleapp.rs/api/accounts/"+ login.value,{method: "POST"})
-    .then(response => {
-        if(response.status === 201){
-            activeMenu()
-        }else if(response.status === 409){
-            login.value = "This login is already taken";
-            password.value = "";
-            confirmPassword.value = "";
-        }else if(response.status === 502){
-            login.value = "Server dead";
-        }else{
-            console.log("Unknown error")
+        }else if(response.status === 200){  
+            gate(response)
         }
     })
 });
+//? Login
+//! Guest 
+// document.getElementById("loginGu").addEventListener("click", function(){
+//     const login = document.getElementById("loginGu")
+//     if (login.value === "This login is already taken") {
+//         login.value = "";
+//     }
+// });
+
+// document.getElementById("guestForm").addEventListener('submit', function(event){
+//     event.preventDefault();
+//     const login = document.getElementById("loginGu");
+//     (async () => {
+//         await gateway.connect();
+//         const token = await response.body;
+//         await gateway.identify(token);
+//         console.log("AAA");
+//     })();
+
+// });
 //! Guest 
 //TODO authorization
+let isIcon = false;
 
-// var token = "e80ae7f7-e05b-4ba8-83c3-68c98f310965"
+document.getElementById("roomCheck").addEventListener("click", function(){
+    isIcon = !isIcon;
+    console.log(isIcon)
+});
 
-// let room = document.getElementById("room")
+export function activePlayersBlock(maxPlayersRoom){
+    const userThree = document.getElementById("userThree")
+    const userFour = document.getElementById("userFour")
+
+    if(maxPlayersRoom === 3){
+        userThree.classList.add("active")
+    }else if(maxPlayersRoom === 4){
+        userThree.classList.add("active")
+        userFour.classList.add("active")
+    }
+}
+
+document.getElementById("createRoom").addEventListener("click", function(){
+    const nameRoom = document.getElementById("nameRoom").value
+    const passwordRoom = document.getElementById("passwordRoom").value
+    const maxPlayersRoom = document.getElementById("maxPlayersRoom").value 
+
+    activePlayersBlock(parseInt(maxPlayersRoom))
+
+    new Room(nameRoom, isIcon, passwordRoom, parseInt(maxPlayersRoom)).create(globalToken)
+})
+
+export function readyGame(roomInfo){
+    const menuInformation = document.getElementById("menuInformation")
+    const readyMenu = document.getElementById("readyMenu")
+    const nameUser = document.getElementById("nameUser")
+    const roomName = document.getElementById("roomName")
+
+    menuInformation.classList.add("active")
+    readyMenu.classList.add("active")
+    roomName.innerText = roomInfo.name
+    nameUser.innerText = roomInfo.players[0].display_name;
+    console.log(roomInfo)
+    console.log(roomInfo.players[0])
+}
+
+document.getElementById("buttonReady").addEventListener("click", function(){
+    const buttonReady = document.getElementById("buttonReady")
+    const statusReady = document.getElementById("statusReady")
+    
+    if(statusReady.innerText === "Not Ready"){
+        statusReady.innerText = "Ready"
+        buttonReady.value = "Not Ready"
+    }else{
+        statusReady.innerText = "Not Ready"
+        buttonReady.value = "Read"
+    }
+})
 
 
-// room.addEventListener("click", function(){
-//     const roomRo = document.getElementById("roomRo")
-//     const passwordRo = document.getElementById("passwordRo")
-//     const playerRo = document.getElementById("playerRo")
-
-//     const data = {public: true, password: passwordRo.value, max_players: parseInt(playerRo.value)};
-//     const jsonBody = JSON.stringify(data);
 
 
 
-//     fetch("https://duo.shuttleapp.rs/api/rooms/",{method:"POST", headers:{"Content-type": "Application/json", "Authorization": token}, body: jsonBody})
-//     .then(response => {
-//         response.text().then(result =>{
-//             console.log(result)
-//         })
-//     })
+// function CreateListRoom(infoRoom) {
+//     const roomList = document.getElementById("roomList");
+//     for (let obj of infoRoom) {
+//         const div = document.createElement("div");
+//         const nameRoomP = document.createElement("p");
+//         const playersP = document.createElement("p");
+//         const passwordInput = document.createElement("input");
+//         const joinGameButton = document.createElement("input");
+
+//         div.classList.add("room");
+//         nameRoomP.classList.add("nameRoomP");
+//         playersP.classList.add("nameRoomP");
+//         passwordInput.classList.add("passwordInput");
+//         joinGameButton.classList.add("joinGameButton");
+
+//         passwordInput.type = "password";
+//         joinGameButton.type = "button";
+
+//         nameRoomP.innerText = obj.name;
+//         playersP.innerText = `Players: ${obj.players}/${obj.max_players}`;
+//         passwordInput.placeholder = "Password";
+//         joinGameButton.value = "Join game";
+
+//         joinGameButton.addEventListener('click', () => {
+//             const room = new Room(obj.name, obj.is_public, obj.password, obj.max_players);
+//             const passwordRoom = {
+//                 password: passwordInput.value
+//             };
+//             room.joinGame(obj.id, passwordRoom, globalToken)
+//                 .then(result => console.log(result))
+//         });
+
+//         div.append(nameRoomP, playersP, passwordInput, joinGameButton);
+//         roomList.appendChild(div);
+//     }
+// }
+
+// fetch("https://duo.shuttleapp.rs/api/rooms", {method: "GET"})
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log(data)
+//         CreateListRoom(data)
+//         console.log(data)
 // })
+

@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="cardGame.css">
 </head>
 <body>
-    <div id="menu">
-        <div id="authorization">
-
-
+    <div id="menu" >
+        <div id="authorization" >
             <div class="formBox login">
                 <h2>Sign In</h2>
                 <form id="loginForm">
@@ -75,45 +73,111 @@
                     <p>Sign in to your account? <a href="#" id="signIns">Login</a></p>
                 </div>
             </div>
-            
         </div>
 
 
-        <div id="menuUser" class="active">
-            <div id="tabs">
-                <div id="user">Yaroslav</div>
-                <div id="headers">
-                    <div class="position">
-                        <span class="lateralLine"></span>
-                        <p>Rooms</p>
+        <div id="menuUser">
+            <div id="menuInformation">
+                <div id="tabs">
+                    <h1 id="user">Yaroslav</h1>
+                    <div id="headers">
+                        <div class="position">
+                            <span class="lateralLine"></span>
+                            <p>Rooms</p>
+                        </div>
+                        <div class="position">
+                            <span class="lateralLine"></span>
+                            <p>Friends</p>
+                        </div>
+                        <div class="position">
+                            <span class="lateralLine"></span>
+                            <p>Rating</p>
+                        </div>
+                        <div class="position">
+                            <span class="lateralLine"></span>
+                            <p>Setting</p>
+                        </div>
                     </div>
-                    <div class="position">
-                        <span class="lateralLine"></span>
-                        <p>Friends</p>
-                    </div>
-                    <div class="position">
-                        <span class="lateralLine"></span>
-                        <p>Rating</p>
-                    </div>
-                    <div class="position">
-                        <span class="lateralLine"></span>
-                        <p>Setting</p>
+                </div>
+
+
+                <div id="information">
+                    <div id="rooms">
+                        <div id="CreatingRoom">
+                        <input type="button" id="createRoom" value="Create Room" title="Click to create a room"></input>
+                            <form id="fieldsRoom">
+                                <div class="blockRoom">
+                                    <input type="text" id="nameRoom" required>
+                                    <label for="nameRoom">Room name</label>
+                                </div>
+                                <div class="blockRoom">
+                                    <input type="text" id="passwordRoom" title="Optional" required>
+                                    <label for="passwordRoom">Password*</label>
+                                </div>
+                                <div class="blockRoom">
+                                    <select id="maxPlayersRoom" required>
+                                        <option selected disabled>How many players?</option>
+                                        <option value="2">Players: 2</option>
+                                        <option value="3">Players: 3</option>
+                                        <option value="4">Players: 4</option>
+                                    </select>
+                                </div>
+                                <div class="blockRoomCheck" id="blockCheck">
+                                    <input type="checkbox" class="custom-checkbox" id="fake">
+                                    <label for="fake" title="Make a private room?" id="roomCheck"></label>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="methodsJoin">
+                            <p id="bthID">Join by ID</p>
+                            <h2>Existing Rooms</h2>
+                            <ion-icon name="refresh-outline" class="iconref" title="Reload rooms"></ion-icon>
+                        </div>
+
+                        <div id="roomList"></div>
                     </div>
                 </div>
             </div>
-            <div id="information">
-                <div>
-                    <input type="text" id="roomRo">
-                    <input type="text" id="passwordRo">
-                    <input type="text" id="playerRo">
+
+
+            <div id="readyMenu">
+                <h2 id="roomName">Room Name</h2>
+                <div id="users">
+                    <div class="blockUser">
+                        <h2 id="nameUser"></h2>
+                        <div class="line"></div>
+                        <p id="statusReady">Not Ready</p>
+                    </div>
+                    <div class="blockUser">
+                        <h2></h2>
+                        <div class="line"></div>
+                        <p>Not Ready</p>
+                    </div>
+                    <div id="userThree" class="blockUser">
+                        <h2></h2>
+                        <div class="line"></div>
+                        <p>Not Ready</p>
+                    </div>
+                    <div id="userFour" class="blockUser">
+                        <h2></h2>
+                        <div class="line"></div>
+                        <p>Not Ready</p>
+                    </div>
                 </div>
-                <input type="button" value="public" id="room">
+                <div id="buttonBlock">
+                    <input type="button" value="Ready" id="buttonReady">
+                    <input type="button" value="Start Game" id="startGame">
+                </div>
             </div>
         </div>
     </div>
     <!-- <div id="game"></div> -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="cardGame.js"></script>
+    <script type="module" src="cardGame.js"></script>
+    <script type="module" src="api/room.js"></script>
+    <script type="module" src="api/auth.js"></script>
+    <script type="module" src="api/gateWay.js"></script>
 </body>
 </html>
