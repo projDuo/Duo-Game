@@ -10,14 +10,13 @@ export function activeMenu(nickPlayer){
     fetch("https://duo.shuttleapp.rs/api/rooms", {method: "GET"})
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         CreateListRoom(data)
-        console.log(data)
     })
 }
 
-function CreateListRoom(infoRoom) {
+export function CreateListRoom(infoRoom) {
     const roomList = document.getElementById("roomList");
+    roomList.innerHTML = ""
     for (let obj of infoRoom) {
         const div = document.createElement("div");
         const nameRoomP = document.createElement("p");
@@ -41,10 +40,7 @@ function CreateListRoom(infoRoom) {
 
         joinGameButton.addEventListener('click', () => {
             const room = new Room(obj.name, obj.is_public, obj.password, obj.max_players);
-            const passwordRoom = {
-                password: passwordInput.value
-            };
-            room.joinGame(obj.id, passwordRoom, globalToken)
+            room.joinGame(obj.id, passwordInput.value, globalToken)
                 // .then(result => console.log(result))
         });
 

@@ -1,16 +1,5 @@
 import { api } from '../cardGame.js';
 
-const bthID =document.getElementById("bthID")
-
-const roomUser =document.getElementById("roomUser")
-
-bthID.addEventListener("click", function(){
-    let input = document.createElement("input")
-    let password = document.createElement("input")
-    password.type = "password"
-    input.type = "text"
-    roomUser.append(input, password)
-})
 
 export class Room{
     constructor(name, is_public, password, max_players){
@@ -35,8 +24,14 @@ export class Room{
     }
 
     joinGame(obj_id ,password, token){
-        fetch(`https://duo.shuttleapp.rs/api/rooms/${obj_id}/join`, {method: "POST", headers:{"Content-type": "Application/json", "Authorization": token}, body: JSON.stringify(password)})
+
+        const PayLoad = {
+            password: password
+        };
+        
+        fetch(`https://duo.shuttleapp.rs/api/rooms/${obj_id}/join`, {method: "POST", headers:{"Content-type": "Application/json", "Authorization": token}, body: JSON.stringify(PayLoad)})
         .then(result => {
+            // console.log(result)
             return result
         })
     }

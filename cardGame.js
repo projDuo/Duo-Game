@@ -2,6 +2,7 @@ import { Auth } from './api/auth.js';
 import { Room } from './api/room.js';
 import { WebSocketManager } from './api/gateWay.js';
 import { activeMenu } from './api/menu.js';
+import { CreateListRoom } from './api/menu.js';
 
 export const api = "https://duo.shuttleapp.rs/api"
 
@@ -190,13 +191,16 @@ export function readyGame(roomInfo){
     const readyMenu = document.getElementById("readyMenu")
     const nameUser = document.getElementById("nameUser")
     const roomName = document.getElementById("roomName")
+    const idRoom = document.getElementById("idRoom")
 
     menuInformation.classList.add("active")
     readyMenu.classList.add("active")
     roomName.innerText = roomInfo.name
-    nameUser.innerText = roomInfo.players[0].display_name;
+    idRoom.innerText = `id: ${roomInfo.id}`
     console.log(roomInfo)
     console.log(roomInfo.players[0])
+    console.log(roomInfo.players[0].display_name)
+    nameUser.innerText = roomInfo.players[0].display_name;
 }
 
 document.getElementById("buttonReady").addEventListener("click", function(){
@@ -214,6 +218,46 @@ document.getElementById("buttonReady").addEventListener("click", function(){
 
 
 
+
+
+
+
+const reloadRoom = document.getElementById("reloadRoom")
+
+reloadRoom.addEventListener("click", function(){
+        fetch("https://duo.shuttleapp.rs/api/rooms", {method: "GET"})
+        .then(response => response.json())
+        .then(data => {
+            CreateListRoom(data)
+    })
+})
+
+const bthID = document.getElementById("bthID")
+const roomList = document.getElementById("roomList")
+const joinById = document.getElementById("joinById")
+
+bthID.addEventListener("click", function(){
+    roomList.classList.add("active")
+    joinById.classList.add("active")
+})
+
+const exitIdBth = document.getElementById("exitIdBth")
+
+exitIdBth.addEventListener("click", function(){
+    roomList.classList.remove("active")
+    joinById.classList.remove("active")
+})
+
+const bthJoinId = document.getElementById("bthJoinId")
+
+bthJoinId.addEventListener("click", function(){
+    const inputIdRoom = document.getElementById("inputIdRoom")
+    const passwordIdRoom = document.getElementById("passwordIdRoom")
+
+    const room = new Room();
+
+    room.joinGame(inputIdRoom.value, passwordIdRoom.value, globalToken)
+})
 
 
 // function CreateListRoom(infoRoom) {
@@ -252,12 +296,4 @@ document.getElementById("buttonReady").addEventListener("click", function(){
 //         roomList.appendChild(div);
 //     }
 // }
-
-// fetch("https://duo.shuttleapp.rs/api/rooms", {method: "GET"})
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data)
-//         CreateListRoom(data)
-//         console.log(data)
-// })
 

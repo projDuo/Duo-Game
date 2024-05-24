@@ -1,6 +1,7 @@
 import { api } from '../cardGame.js';
 import { readyGame } from '../cardGame.js';
 import { activeMenu } from './menu.js';
+import { Player } from './player.js';
 import { activePlayersBlock } from '../cardGame.js';
 
 export class WebSocketManager {
@@ -29,15 +30,24 @@ export class WebSocketManager {
 
             this.socket.addEventListener('message', (event) => { 
                 let data = JSON.parse(event.data);
+                
+                console.log(data)
+                console.log(data.RoomPlayerNew)
+
                 if (data.Ready) {
                     activeMenu(data.Ready.login);
                 }else if(data.RoomCreate) {
                     readyGame(data.RoomCreate)
                     activePlayersBlock(data.RoomCreate.max_players)
-                    console.log(data)
-                    console.log(data.RoomCreate.max_players)
-                }else{
-
+                } else if (data.RoomPlayerNew) {
+                    let newPlayer = new Player(data.RoomPlayerNew.player.id);
+                    newPlayer.load()
+                        .then(() => {
+                            // Встановлення імені гравця у другій карточці
+                            document.getElementById('nameUser2').textContent = newPlayer.display_name;
+                            console.log(newPlayer.display_name); // Для перевірки в консолі
+                            console.log(newPlayer.login);
+                        })
                 }
             });
          
@@ -72,22 +82,4 @@ export class WebSocketManager {
         try {
             await this.sendData(dataEnd);
         }catch{}}
-
-    // activeMenu(nickPlayer) {
-    //     document.getElementById("user").innerText = nickPlayer;
-    //     document.getElementById("authorization").style.display = "none";
-    //     document.getElementById("menu").style.width = "750px";
-    //     document.getElementById("menuUser").classList.add("active");
-
-    //     fetch(api + "/rooms?limit=100", {method:"GET"})
-    //     .then(result => console.log(result.json()))
-
-    //     fetch("https://duo.shuttleapp.rs/api/rooms", {method: "GET"})
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log(data)
-    //         CreateListRoom(data)
-    //         console.log(data)
-    //     })
-    // }
 }
