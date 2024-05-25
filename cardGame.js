@@ -197,9 +197,6 @@ export function readyGame(roomInfo){
     readyMenu.classList.add("active")
     roomName.innerText = roomInfo.name
     idRoom.innerText = `id: ${roomInfo.id}`
-    console.log(roomInfo)
-    console.log(roomInfo.players[0])
-    console.log(roomInfo.players[0].display_name)
     nameUser.innerText = roomInfo.players[0].display_name;
 }
 
@@ -297,3 +294,44 @@ bthJoinId.addEventListener("click", function(){
 //     }
 // }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const sections = {
+        playerStatistics: document.getElementById("playerStatistics"),
+        rooms: document.getElementById("rooms"),
+        friends: document.getElementById("friends"),
+        rating: document.getElementById("rating"),
+        setting: document.getElementById("setting")
+    };
+
+    const buttons = {
+        bthRoom: sections.rooms,
+        bthFriends: sections.friends,
+        bthRating: sections.rating,
+        bthSetting: sections.setting
+    };
+
+    // Функція для приховання всіх секцій, окрім обраної
+    function hideAllSections() {
+        Object.values(sections).forEach(section => {
+            section.classList.add("hidden");
+        });
+    }
+
+    // Додаємо обробник кліку для користувацької кнопки
+    document.getElementById("user").addEventListener("click", () => {
+        hideAllSections(); // Приховуємо всі секції
+        sections.playerStatistics.classList.remove("hidden"); // Показуємо обрану секцію
+    });
+
+    // Додаємо обробник кліку для інших кнопок
+    Object.entries(buttons).forEach(([buttonId, section]) => {
+        document.getElementById(buttonId).addEventListener("click", () => {
+            hideAllSections(); // Приховуємо всі секції
+            section.classList.remove("hidden"); // Показуємо обрану секцію
+        });
+    });
+
+    // Початково приховуємо всі секції крім першої
+    hideAllSections();
+    sections.rooms.classList.remove("hidden");
+});
