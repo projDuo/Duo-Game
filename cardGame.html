@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="cardGame.css">
 </head>
 <body>
-    <div id="menu">
-        <div id="authorization">
+    <div id="menu" style="width: 750px;">
+        <div id="authorization" style="display: none;">
             <div class="formBox login">
                 <h2>Sign In</h2>
                 <form id="loginForm">
@@ -102,7 +102,7 @@
 
 
                 <div id="information">
-                    <div id="playerStatistics">
+                    <div id="playerStatistics" style="display: none;">
                         <h2 id="userStatistics">Yaroslav</h2>
                         <div id="containerPlayerStatistics">
                             <div class="blockPlayerStatistics">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="rooms">
+                    <div id="rooms" style="display: none;">
                         <div id="CreatingRoom">
                         <input type="button" id="createRoom" value="Create Room" title="Click to create a room"></input>
                             <form id="fieldsRoom">
@@ -186,7 +186,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="friends">
+                    <div id="friends" style="display: none;">
                         <h2>Your friends</h2>
                         <div id="containerFriends">
                             <div class="blockFriends">
@@ -197,8 +197,40 @@
                             </div>
                         </div>
                     </div>
-                    <div id="rating"></div>
-                    <div id="setting"></div>
+                    <div id="rating" style="display: none;">
+                        <h2>Player rating</h2>
+                        <div id="containerRating">
+                            <div class="blockRating">
+                                <h3>Nick Player</h3>
+                                <p>Number of wins: 10</p>
+                                <p>Points: 10</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="setting">
+                        <div id="menuSetting">
+                            <h2>Thank you for playing our game!</h2>
+                            <div id="variousUtilities">
+                                <span class="emojione--flag-for-ukraine"></span>
+                                <!-- <div id="languageUA"></div> -->
+                                <ion-icon name="volume-high-outline" id="audio"></ion-icon>
+                                <span class="circle-flags--us"></span>
+                                <!-- <div id="languageEN"></div> -->
+                            </div>
+                            <div id="creators">
+                                <div class="blockCreators">
+                                    <h3>Backend</h3>
+                                    <p>Vladislav Radchenko</p>
+                                    <a href="https://github.com/RUMBlk" target="_blank"><ion-icon name="logo-github"></ion-icon></a>
+                                </div>
+                                <div class="blockCreators">
+                                    <h3>Frondend</h3>
+                                    <p>Yaroslav Plaksiuk</p>
+                                    <a href="https://github.com/Semikq" target="_blank"><ion-icon name="logo-github"></ion-icon></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
