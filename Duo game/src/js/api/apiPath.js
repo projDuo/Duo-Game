@@ -1,0 +1,1 @@
+export const api = "https://duo.shuttleapp.rs/api"

@@ -1,0 +1,173 @@
+<div id="menuUser">
+    <div id="menuInformation">
+        <div id="tabs">
+            <h1 id="user">Yaroslav</h1>
+            <div id="headers">
+                <div class="position">
+                    <span class="lateralLine"></span>
+                    <p id="bthRoom">Rooms</p>
+                </div>
+                <div class="position">
+                    <span class="lateralLine"></span>
+                    <p id="bthFriends">Friends</p>
+                </div>
+                <div class="position">
+                    <span class="lateralLine"></span>
+                    <p id="bthRating">Rating</p>
+                </div>
+                <div class="position">
+                    <span class="lateralLine"></span>
+                    <p id="bthSetting">Setting</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="information">
+            <div id="playerStatistics">
+                <h2 id="userStatistics">Yaroslav</h2>
+                <div id="containerPlayerStatistics">
+                    <div class="blockPlayerStatistics">
+                        <p>Points:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Number of wins:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Number of cards for all time:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Games played:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Percentage of winnings:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Average points per game:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Most points per game:</p>
+                    </div>
+                    <div class="blockPlayerStatistics">
+                        <p>Lost games:</p>
+                    </div>
+                </div>
+            </div>
+            <div id="rooms">
+                <div id="CreatingRoom">
+                <input type="button" id="createRoom" value="Create Room" title="Click to create a room"></input>
+                    <form id="fieldsRoom">
+                        <div class="blockRoom">
+                            <input type="text" id="nameRoom" required>
+                            <label for="nameRoom">Room name</label>
+                        </div>
+                        <div class="blockRoom">
+                            <input type="text" id="passwordRoom" title="Optional" required>
+                            <label for="passwordRoom">Password*</label>
+                        </div>
+                        <div class="blockRoom">
+                            <select id="maxPlayersRoom" required>
+                                <option selected disabled>How many players?</option>
+                                <option value="2">Players: 2</option>
+                                <option value="3">Players: 3</option>
+                                <option value="4">Players: 4</option>
+                            </select>
+                        </div>
+                        <div class="blockRoomCheck" id="blockCheck">
+                            <input type="checkbox" class="custom-checkbox" id="fake">
+                            <label for="fake" title="Make a private room?" id="roomCheck"></label>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="methodsJoin">
+                    <p id="bthID">Join by ID</p>
+                    <h2>Existing Rooms</h2>
+                    <ion-icon name="refresh-outline" class="iconref" id="reloadRoom" title="Reload rooms"></ion-icon>
+                </div>
+
+                <div id="ListAndJoin">
+                    <div id="roomList"></div>
+                    <div id="joinById">
+                        <div class="exitFromId">
+                            <ion-icon name="close-outline" id="exitIdBth"></ion-icon>
+                        </div>
+                        <div id="fieldSection">
+                            <div class="blockId">
+                                <input type="number" class="inputIdRoom" id="inputIdRoom" required>
+                                <label for="inputIdRoom">Enter the room id</label>
+                            </div>
+                            <div class="blockId">
+                                <input type="password" class="inputIdRoom" id="passwordIdRoom" title="The password is optional" required>
+                                <label for="paswordIdRoom" title="The password is optional">Password*</label>
+                            </div>
+                        </div>
+                        <div class="bthJoinId">
+                            <input type="button" value="Join the room" id="bthJoinId">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="friends">
+                <h2>Your friends</h2>
+                <div id="containerFriends">
+                    <div class="blockFriends">
+                        <h3>Nick Player</h3>
+                        <p>Online</p>
+                        <input type="button" value="Join game">
+                        <input type="button" value="Delete">
+                    </div>
+                </div>
+            </div>
+            <div id="rating">
+                <h2>Player rating</h2>
+                <div id="containerRating">
+                    <div class="blockRating">
+                        <h3>Nick Player</h3>
+                        <p>Number of wins: 10</p>
+                        <p>Points: 10</p>
+                    </div>
+                </div>
+            </div>
+            <div id="setting">
+                <div id="menuSetting">
+                    <h2>Thank you for playing our game!</h2>
+                    <div id="variousUtilities">
+                        <span class="emojione--flag-for-ukraine"></span>
+                        <!-- <div id="languageUA"></div> -->
+                        <ion-icon name="volume-high-outline" id="audio"></ion-icon>
+                        <span class="circle-flags--us"></span>
+                        <!-- <div id="languageEN"></div> -->
+                    </div>
+                    <div id="creators">
+                        <div class="blockCreators">
+                            <h3>Backend</h3>
+                            <p>Vladislav Radchenko</p>
+                            <a href="https://github.com/RUMBlk" target="_blank"><ion-icon name="logo-github"></ion-icon></a>
+                        </div>
+                        <div class="blockCreators">
+                            <h3>Frondend</h3>
+                            <p>Yaroslav Plaksiuk</p>
+                            <a href="https://github.com/Semikq" target="_blank"><ion-icon name="logo-github"></ion-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="readyMenu">
+        <div id="nameAndIdRoom">
+            <span id="leaveRoom"><ion-icon name="close-outline"></ion-icon></span>
+            <h2 id="roomName"></h2>
+            <p id="idRoom"></p>
+        </div>
+        <div id="users">
+        </div>
+        <div id="buttonBlock">
+            <input type="button" value="Ready" id="buttonReady">
+            <input type="button" value="Start Game" id="startGame">
+        </div>
+    </div>
+</div>

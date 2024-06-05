@@ -1,4 +1,4 @@
-import { api } from '../cardGame.js';
+import { api } from "./apiPath.js"
 
 export class Auth{
     constructor(login, password){

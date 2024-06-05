@@ -1,0 +1,342 @@
+body{
+    background-image: url(/src/img/west.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width:100vw;;
+    overflow-x: hidden;
+}
+
+#gameContainer{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+#containerOne{
+    height: 210px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#EnemyCard{
+    height: 100%;
+    width: 140px;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+.enemy{
+    transform: rotate(180deg);
+}
+
+.contNumber:nth-child(1) .enemy{
+    transform: translate(18px, -85px) rotate(180deg);
+    color: red;
+    font-size: 30px; 
+}
+
+.contNumber:nth-last-child(1) .enemy{
+    transform: translate(-46px, 55px) rotate(180deg);
+    color: red;
+    font-size: 30px; 
+}
+
+
+
+
+
+#containerTwo{
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#playerThree {
+    height: 100%;
+    width: 210px;
+    display: flex;
+    align-items: center;
+}
+
+#EnemyCardRowLeft{
+    height: 140px;
+    width: 100%;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.elementLeft{
+    position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.elementLeft:nth-child(1){
+    bottom: 0;
+    left: 0;
+	border-bottom: 100px solid black; 
+	border-right: 100px solid transparent;
+    border-bottom-left-radius: 25px;
+}
+
+.elementLeft:nth-last-child(1){
+    top: 0;
+    right: 0;
+	border-top: 100px solid black; 
+	border-left: 100px solid transparent;
+    border-top-right-radius: 25px;
+}
+
+
+.enemyLeft{
+    transform: rotate(90deg);
+}
+
+.elementLeft:nth-child(1) .enemyLeft{
+    transform: translate(15px, 55px) rotate(90deg);
+    color: red;
+    font-size: 30px; 
+}
+
+.elementLeft:nth-last-child(1) .enemyLeft{
+    transform: translate(-45px, -85px) rotate(90deg);
+    color: red;
+    font-size: 30px; 
+}
+
+
+
+
+#playGround {
+    height: 100%;
+    flex-grow: 1;
+}
+
+#playerFour {
+    height: 100%;
+    width: 210px;
+    display: flex;
+    align-items: center;
+}
+
+#EnemyCardRight{
+    height: 140px;
+    width: 100%;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+.elementRight{
+    position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.elementRight:nth-child(1){
+    bottom: 0;
+    left: 0;
+	border-bottom: 100px solid black; 
+	border-right: 100px solid transparent;
+    border-bottom-left-radius: 25px;
+}
+
+.elementRight:nth-last-child(1){
+    top: 0;
+    right: 0;
+	border-top: 100px solid black; 
+	border-left: 100px solid transparent;
+    border-top-right-radius: 25px;
+}
+
+
+.enemyRight{
+    transform: rotate(270deg);
+}
+
+.elementRight:nth-child(1) .enemyRight{
+    transform: translate(15px, 55px) rotate(270deg);
+    color: red;
+    font-size: 30px; 
+}
+
+.elementRight:nth-last-child(1) .enemyRight{
+    transform: translate(-45px, -85px) rotate(270deg);
+    color: red;
+    font-size: 30px; 
+}
+
+
+
+
+
+#containerThree{
+    height: 210px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+
+/*TODO Blank for card */
+
+
+.contNumber{
+    position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.contNumber:nth-child(1){
+    left: 0;
+    top: 0;
+    border-top: 100px solid black; 
+	border-right: 100px solid transparent;	
+    border-top-left-radius: 25px;
+}
+
+.contNumber:nth-last-child(1){
+    right: 0;
+    bottom: 0;
+	border-bottom: 100px solid black; 
+	border-left: 100px solid transparent;
+    border-bottom-right-radius: 25px;
+}
+
+.number{
+    position: relative;
+    color: red; 
+    font-size: 30px; 
+}
+
+.contCenter{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contCenter p{
+    color: black;
+    font-size: 35px;
+    font-family: cursive;
+}
+
+
+/*! */
+
+#defaultCard{
+    height: 100%;
+    width: 140px;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+.contNumber:nth-child(1) p{
+    transform: translate(18px, -85px);
+}
+
+.contNumber:nth-last-child(1) p{
+    transform: translate(-34px, 54px);
+}
+/*! */
+
+
+
+
+/*? */
+
+#flowCard{
+    height: 100%;
+    width: 140px;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+.contNumber:nth-child(1) ion-icon{
+    transform: translate(15px, -85px);
+}
+
+.contNumber:nth-last-child(1) ion-icon{
+    transform: translate(-44px, 55px);
+}
+
+/*? */
+
+/*  */
+
+/*! */
+
+#stunCard{
+    height: 100%;
+    width: 140px;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+/*! */
+
+
+
+
+/*? */
+
+#plusCard{
+    height: 100%;
+    width: 140px;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+.contCenter ion-icon{
+    font-size: 50px; 
+}
+
+.contNumber:nth-child(1) #plusNumber{
+    transform: translate(12px, -85px);
+}
+
+.contNumber:nth-last-child(1) #plusNumber{
+    transform: translate(-46px, 55px);
+}
+
+/*? */
+
+
+
+
+/*! */
+
+#backCard{
+    height: 100%;
+    width: 140px;
+    background-color: red;
+    border-radius: 25px;
+    position: relative;
+}
+
+/*! */
