@@ -9,7 +9,7 @@ export class Profile {
     static async load(id) {
         let PayLoad = await fetch(`https://duo.shuttleapp.rs/api/users/${id}`)
             .then(res => res.json());
-    
+            
         if (PayLoad) {
             return new Profile(id, PayLoad.display_name, PayLoad.login, PayLoad.created_at)
         }

@@ -1,4 +1,4 @@
-body{
+/* body{
     background-image: url(/src/img/west.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -10,7 +10,8 @@ body{
     height: 100vh;
     width:100vw;;
     overflow-x: hidden;
-}
+    user-select: none;
+} */
 
 #gameContainer{
     height: 100%;
@@ -19,190 +20,34 @@ body{
     flex-direction: column;
 }
 
-
-
-
-#containerOne{
-    height: 210px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-#EnemyCard{
-    height: 100%;
-    width: 140px;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
-}
-
-.enemy{
-    transform: rotate(180deg);
-}
-
-.contNumber:nth-child(1) .enemy{
-    transform: translate(18px, -85px) rotate(180deg);
-    color: red;
-    font-size: 30px; 
-}
-
-.contNumber:nth-last-child(1) .enemy{
-    transform: translate(-46px, 55px) rotate(180deg);
-    color: red;
-    font-size: 30px; 
-}
-
-
-
-
-
-#containerTwo{
-    flex-grow: 1;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-#playerThree {
-    height: 100%;
-    width: 210px;
-    display: flex;
-    align-items: center;
-}
-
-#EnemyCardRowLeft{
-    height: 140px;
-    width: 100%;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-}
-
-.elementLeft{
-    position: absolute;
-	width: 0;
-	height: 0;
-}
-
-.elementLeft:nth-child(1){
-    bottom: 0;
-    left: 0;
-	border-bottom: 100px solid black; 
-	border-right: 100px solid transparent;
-    border-bottom-left-radius: 25px;
-}
-
-.elementLeft:nth-last-child(1){
-    top: 0;
-    right: 0;
-	border-top: 100px solid black; 
-	border-left: 100px solid transparent;
-    border-top-right-radius: 25px;
-}
-
-
-.enemyLeft{
-    transform: rotate(90deg);
-}
-
-.elementLeft:nth-child(1) .enemyLeft{
-    transform: translate(15px, 55px) rotate(90deg);
-    color: red;
-    font-size: 30px; 
-}
-
-.elementLeft:nth-last-child(1) .enemyLeft{
-    transform: translate(-45px, -85px) rotate(90deg);
-    color: red;
-    font-size: 30px; 
-}
-
-
-
-
-#playGround {
-    height: 100%;
-    flex-grow: 1;
-}
-
-#playerFour {
-    height: 100%;
-    width: 210px;
-    display: flex;
-    align-items: center;
-}
-
-#EnemyCardRight{
-    height: 140px;
-    width: 100%;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
-}
-
-.elementRight{
-    position: absolute;
-	width: 0;
-	height: 0;
-}
-
-.elementRight:nth-child(1){
-    bottom: 0;
-    left: 0;
-	border-bottom: 100px solid black; 
-	border-right: 100px solid transparent;
-    border-bottom-left-radius: 25px;
-}
-
-.elementRight:nth-last-child(1){
-    top: 0;
-    right: 0;
-	border-top: 100px solid black; 
-	border-left: 100px solid transparent;
-    border-top-right-radius: 25px;
-}
-
-
-.enemyRight{
-    transform: rotate(270deg);
-}
-
-.elementRight:nth-child(1) .enemyRight{
-    transform: translate(15px, 55px) rotate(270deg);
-    color: red;
-    font-size: 30px; 
-}
-
-.elementRight:nth-last-child(1) .enemyRight{
-    transform: translate(-45px, -85px) rotate(270deg);
-    color: red;
-    font-size: 30px; 
-}
-
-
-
-
+/*? Player One */
 
 #containerThree{
     height: 210px;
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 5px;
+    position: relative;
 }
 
+#containerThree .card{
+    height: 100%;
+    width: 140px;
+    border-radius: 25px;
+    transition: all 0.3s;
+    font-family: cursive;
+    position: absolute;
+}
 
-
-/*TODO Blank for card */
-
+#containerThree .card.persistent-hover {
+    transform: translateY(-125px);
+}
 
 .contNumber{
-    position: absolute;
 	width: 0;
 	height: 0;
+    font-size: 30px; 
+    position: absolute;
 }
 
 .contNumber:nth-child(1){
@@ -210,7 +55,7 @@ body{
     top: 0;
     border-top: 100px solid black; 
 	border-right: 100px solid transparent;	
-    border-top-left-radius: 25px;
+    border-top-left-radius: 23px;
 }
 
 .contNumber:nth-last-child(1){
@@ -218,125 +63,180 @@ body{
     bottom: 0;
 	border-bottom: 100px solid black; 
 	border-left: 100px solid transparent;
-    border-bottom-right-radius: 25px;
-}
-
-.number{
-    position: relative;
-    color: red; 
-    font-size: 30px; 
+    border-bottom-right-radius: 23px;
 }
 
 .contCenter{
-    position: absolute;
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.contCenter p{
     color: black;
-    font-size: 35px;
-    font-family: cursive;
-}
-
-
-/*! */
-
-#defaultCard{
-    height: 100%;
-    width: 140px;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
-}
-
-.contNumber:nth-child(1) p{
-    transform: translate(18px, -85px);
-}
-
-.contNumber:nth-last-child(1) p{
-    transform: translate(-34px, 54px);
-}
-/*! */
-
-
-
-
-/*? */
-
-#flowCard{
-    height: 100%;
-    width: 140px;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
-}
-
-.contNumber:nth-child(1) ion-icon{
-    transform: translate(15px, -85px);
-}
-
-.contNumber:nth-last-child(1) ion-icon{
-    transform: translate(-44px, 55px);
-}
-
-/*? */
-
-/*  */
-
-/*! */
-
-#stunCard{
-    height: 100%;
-    width: 140px;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
-}
-
-/*! */
-
-
-
-
-/*? */
-
-#plusCard{
-    height: 100%;
-    width: 140px;
-    background-color: red;
-    border-radius: 25px;
-    position: relative;
+    font-size: 32px;
 }
 
 .contCenter ion-icon{
-    font-size: 50px; 
+    font-size: 46px;
 }
 
-.contNumber:nth-child(1) #plusNumber{
-    transform: translate(12px, -85px);
+.contNumber:nth-child(1) p.doubleNumber{
+    transform: translate(12px, -88px);
 }
 
-.contNumber:nth-last-child(1) #plusNumber{
-    transform: translate(-46px, 55px);
+.contNumber:nth-last-child(1) p.doubleNumber{
+    transform: translate(-42px, 56px);
 }
 
-/*? */
+.contNumber:nth-child(1) ion-icon{
+    transform: translate( 12px, -90px);
+}
 
+.contNumber:nth-last-child(1) ion-icon{
+    transform: translate(-40px, 54px);
+}
 
-
-
-/*! */
-
-#backCard{
+.divContainer{
     height: 100%;
     width: 140px;
-    background-color: red;
-    border-radius: 25px;
+    background: transparent;
+}
+/*? Player One */
+
+/*! Player Two */
+#containerOne{
+    height: 210px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     position: relative;
 }
 
-/*! */
+#containerOne .enemyCard{
+    height: 100%;
+    width: 140px;
+    border: solid 1px rgb(255, 102, 0);
+    background-color: rgb(255, 102, 0);
+    color: rgb(255, 102, 0);
+    border-radius: 25px;
+    position: absolute;
+    transform: rotate(180deg);
+    font-size: 30px; 
+}
+
+.contNumber:nth-child(1) .enemy{
+    transform: translate(18px, -85px);
+}
+
+.contNumber:nth-last-child(1) .enemy{
+    transform: translate(-46px, 55px);
+}
+/*! Player Two */
+
+/*? Field */
+
+#playGround {
+    height: 100%;
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+#playGroundContOne{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+#playGroundContTwo{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.centerCard{
+    height: 210px;
+    width: 140px;
+    border-radius: 25px;
+    position: relative;
+    font-family: cursive;
+    background-color: rgb(255, 102, 0);
+    color: rgb(255, 102, 0);
+}
+
+#playGroundContOne .centerCard{
+    transform: translate(-25px, 60px);
+}
+
+#playGroundContTwo .centerCard{
+    transform: translate(25px, -60px);
+}
+
+/*? Field */
+
+/*! Player Three or Four */
+#containerTwo{
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#playerThree{
+    height: 100%;
+    width: 210px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.enemyLeftAndRight{
+    height: 140px;
+    width: 100%;
+    border: solid 1px rgb(255, 102, 0);
+    background-color: rgb(255, 102, 0);
+    color: rgb(255, 102, 0);
+    border-radius: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    font-family: cursive;
+}
+
+.contCenter .enemyLeft{
+    transform: rotate(90deg);
+}
+
+.contNumber:nth-child(1) .enemyLeft{
+    transform: translate(15px, -90px) rotate(90deg);
+}
+
+.contNumber:nth-last-child(1) .enemyLeft{
+    transform: translate(-40px, 60px) rotate(90deg);
+}
+
+#playerFour {
+    height: 100%;
+    width: 210px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contCenter .enemyRight{
+    transform: rotate(270deg);
+}
+
+.contNumber:nth-child(1) .enemyRight{
+    transform: translate(10px, -90px) rotate(270deg);
+}
+
+.contNumber:nth-last-child(1) .enemyRight{
+    transform: translate(-40px, 60px) rotate(270deg);
+}
+/*! Player Three or Four */

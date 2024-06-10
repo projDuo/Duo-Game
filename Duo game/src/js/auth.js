@@ -6,11 +6,21 @@ import { activeMenu } from './playerMenu.js';
 
 export let globalToken = ""
 
+const url = 'wss://duo.shuttleapp.rs/api/gateway';
+
+export async function gate(token) {
+    const gateway = new WebSocketManager(url);
+    await gateway.connect();
+    await gateway.identify(token);
+
+    globalToken = token;
+}
+
 export async function load(){
     const response = await fetch("auth.html")
     const text = await response.text();
     document.getElementById('menu').innerHTML = text;
-
+    document.getElementById("menu").style.display = "flex"
 
     const authorization = document.getElementById("authorization");
 
@@ -26,17 +36,6 @@ export async function load(){
     document.getElementById("signIns").addEventListener("click", function() {
         authorization.classList.remove("activeGuest");
     });
-
-    const url = 'wss://duo.shuttleapp.rs/api/gateway';
-
-    async function gate(response) {
-        const gateway = new WebSocketManager(url);
-        await gateway.connect();
-        const token = await response.text();
-        await gateway.identify(token);
-
-        globalToken = token;
-    }
 
     //! Register
     document.getElementById("loginUp").addEventListener("click", function(){
@@ -58,9 +57,11 @@ export async function load(){
             return;
         }
 
-        accountReg.register().then(response => {
+        accountReg.register().then(async response => {
             if(response.status === 200){
-                gate(response)
+                let res = await response.text()
+                duoGame.setCookie("cookieToken", res, 7)
+                gate(res)
             }else if(response.status === 409){
                 login.value = "This login is already taken";
                 password.value = "";
@@ -88,7 +89,7 @@ export async function load(){
         const password = document.getElementById("passwordIn");
         const accountLog = new Auth(login, password)
 
-        accountLog.auth().then(response => {
+        accountLog.auth().then(async response => {
             if(response.status === 403){
                 document.getElementById("checkPassword").innerText = "Invalid password, please try again"
             }else if(response.status === 404){
@@ -98,7 +99,11 @@ export async function load(){
                 login.value = "Server dead";
                 password.value = "Server dead";
             }else if(response.status === 200){ 
-                gate(response)
+                let res = await response.text()
+                duoGame.setCookie("cookieToken", res, 7)
+                gate(res)
+                duoGame.getCookie("cookieToken")
+                console.log(duoGame.getCookie("cookieToken"))
             }
         })
     });

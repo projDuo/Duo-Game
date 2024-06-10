@@ -3,7 +3,7 @@ import {Profile} from '../profile.js'
 export class Player extends Profile{
     constructor(id, is_ready, points){
         super(id, null, null, null)
-        this.is_ready = is_ready,
+        this.is_ready = is_ready
         this.points = points
     }
 
@@ -13,7 +13,6 @@ export class Player extends Profile{
             this.display_name = profile.display_name;
             this.login = profile.login;
             this.created_at = profile.created_at;
-            this.is_ready = profile.is_ready;
         }
     }
 

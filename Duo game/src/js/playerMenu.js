@@ -2,11 +2,13 @@ import * as rooms from "./api/rooms/room.js";
 import { globalToken } from './auth.js';
 import { roomCreateGateWay } from './api/gateWay.js'
 import { logged_as } from "./duoGame.js";
+import * as duoGame from "./duoGame.js"; 
 
 export async function load(){
     const response = await fetch("playerMenu.html")
     const text = await response.text();
     document.getElementById('menu').innerHTML = text;
+    document.getElementById("menu").style.display = "flex"
 
     const createRoom = document.getElementById("createRoom");
     createRoom.addEventListener("click", function(){
@@ -53,6 +55,18 @@ export async function load(){
         roomCreateGateWay(JSON.parse(await data.text()))
     });
 
+
+
+    document.getElementById("Exit").addEventListener("click", function(){
+        fetch("https://duo.shuttleapp.rs/api/auth/logout", {method: "POST", headers: {"Authorization": globalToken}})
+        .then(result => {
+            if(result.status === 200){
+                duoGame.setCookie("cookieToken", "", 7)
+                document.getElementById("menu").style.display = "none"
+            }
+        })
+    })
+
 //? Вкладки
 
         const sections = {
@@ -96,6 +110,21 @@ export async function load(){
 
         hideAllSections();
         sections.rooms.classList.remove("hidden");
+
+        document.getElementById("user").addEventListener("click", function(){
+            fetch(`https://duo.shuttleapp.rs/api/users/${logged_as.id}/stat`, {method: "GET"})
+            .then(async result => {
+                let staticUser = await result.json()
+                document.getElementById("points").innerText = staticUser.points
+                document.getElementById("numWins").innerText = staticUser.wins
+                document.getElementById("numTime").innerText = staticUser.cards_had
+                document.getElementById("gamePlay").innerText = staticUser.games_played
+                // document.getElementById("perWin").innerText = staticUser.points
+                // document.getElementById("aveGame").innerText = staticUser.points
+                document.getElementById("mostPoints").innerText = staticUser.max_points 
+                document.getElementById("lostGame").innerText = staticUser.loses
+            })
+        })
 }
 
 
@@ -109,7 +138,7 @@ export async function load(){
 
 
 
-
+export let globalRoom = ""
 let readyPlayers = 0
 
 export function readyGame(roomInfo, maxPlayer) {
@@ -123,7 +152,8 @@ export function readyGame(roomInfo, maxPlayer) {
     const buttonReady = document.getElementById("buttonReady");
 
     users.innerHTML = "";
-    
+    globalRoom = roomInfo
+
     menuInformation.classList.add("active");
     readyMenu.classList.add("active");
     startGame.disabled = true;
@@ -235,14 +265,6 @@ export async function activeMenu(){
     document.getElementById("menu").style.width = "750px";
     document.getElementById("menuUser").classList.add("active");
     document.getElementById("userStatistics").innerText = logged_as.display_name
-
-    // 
-    fetch(`https://duo.shuttleapp.rs/api/users/${logged_as.id}/stat`, {method: "GET"})
-    .then(async result => {
-        let a = await result.text()
-        console.log(JSON.parse(a))
-    })
-    // 
     
     updateList()
     setInterval(updateList, 20000)

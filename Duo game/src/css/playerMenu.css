@@ -26,7 +26,7 @@
     border-bottom: solid 2px rgba(47,0,6,255);
 }
 
-#tabs #user{
+#user{
     width: 40%;
     display: flex;
     justify-content: start;
@@ -36,7 +36,7 @@
     color: rgba(47,0,6,255);
 }
 
-#tabs #headers{
+#headers{
     width: 60%;
     display: flex;
     justify-content: space-around;
@@ -118,7 +118,6 @@
 }
 
 #containerPlayerStatistics .blockPlayerStatistics {
-    display: flex;
     flex-shrink: 0;
     height: 12%;
     width: 90%;
@@ -126,7 +125,10 @@
     display: flex;
     align-items: center;
     padding-left: 20px;
+    padding-right: 20px;
     transition: all 0.2s ease-in-out;
+    background-color: aqua;
+    justify-content: space-between;
 }
 
 #containerPlayerStatistics .blockPlayerStatistics:hover{
@@ -134,8 +136,12 @@
     border-bottom: solid 1px rgb(250, 81, 2);
 }
 
-#containerPlayerStatistics .blockPlayerStatistics p {
-    font-size: 23px;
+#containerPlayerStatistics .blockPlayerStatistics p:nth-child(1) {
+    font-size: 24px;
+}
+
+#containerPlayerStatistics .blockPlayerStatistics p:nth-last-child(1){
+    font-size: 24px;
 }
 
 /*TODO Player Statistics */
@@ -678,14 +684,11 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     display: flex;
     flex-direction: row;
-    /* background-color: teal; */
 }
 
 #creators .blockCreators{
     height: 100%;
     width: 50%;
-    /* background-color: firebrick; */
-    /* border-left: solid 1px black; */
     display: flex;
     align-items: center;
     flex-direction: column;

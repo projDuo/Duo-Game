@@ -5,6 +5,8 @@ import { Player } from './rooms/player.js';
 import * as playerMenu from "../playerMenu.js";
 import * as rooms from "./rooms/room.js";
 import * as duoGame from "../duoGame.js"; 
+import * as auth from "../auth.js"; 
+import * as game from "../game.js"; 
 
 export class WebSocketManager {
     constructor(url) {
@@ -12,6 +14,7 @@ export class WebSocketManager {
         this.socket = null;
         this.ready = false;
         this.room_to_load = null;
+        this.gameToLoad = null;
     }
 
     async openWebSocket() {
@@ -41,12 +44,14 @@ export class WebSocketManager {
                     if (this.room_to_load != null) {
                         await roomCreateGateWay(this.room_to_load);
                     }
+                    if (this.gameToLoad != null) {
+                        await game.load(this.gameToLoad);
+                    }
                     this.ready = true;
                 } else if (data.RoomCreate) {
                     if (this.ready == false) { 
                         this.room_to_load = data.RoomCreate
-                    }
-                    else {
+                    }else {
                         await roomCreateGateWay(data.RoomCreate);
                     }
                 }else if(data.RoomUpdate){
@@ -58,6 +63,18 @@ export class WebSocketManager {
                     playerMenu.updatePlayerRoom(data.RoomPlayerUpdate)
                 }else if(data.RoomPlayerLeft){
                     playerMenu.leavePlayerRoom(data.RoomPlayerLeft)
+                }else if(data.Error === "InvalidToken"){
+                    auth.load()
+                }else if(data.GameStarted){
+                    if (this.ready == false) { 
+                        this.gameToLoad = data.GameStarted
+                    }else {
+                        await game.load(data.GameStarted)
+                    }
+                }else if(data.GameNewTurn){
+                    // game.load(data.GameNewTurn)
+                }else if(data.GamePlayerCards){
+                    game.spawnPlayersCards(data.GamePlayerCards)
                 }
             });
             this.socket.addEventListener('close', () => { 
@@ -96,7 +113,7 @@ export class WebSocketManager {
 export async function roomCreateGateWay(data){
     const arr = []
     for(let player of data.players){
-        let newPlayer = new Player(player.id, player.display_name, player.is_ready, player.points);
+        let newPlayer = new Player(player.id, player.is_ready, player.points);
         await newPlayer.load();
         arr.push(newPlayer);
     }
