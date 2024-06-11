@@ -23,7 +23,6 @@ export async function load(){
     
     document.getElementById("roomCheck").addEventListener("click", function(){
         isIcon = !isIcon;
-        console.log(isIcon);
     });
 
 
@@ -280,6 +279,9 @@ function updateList(){
 
 function CreateListRoom(infoRoom) {
     const roomList = document.getElementById("roomList");
+    if(roomList === null){
+        return null
+    }
     roomList.innerHTML = ""
     for (let obj of infoRoom) {
         const div = document.createElement("div");

@@ -1,158 +1,35 @@
 import { globalToken } from "./auth.js";
 import {globalRoom} from "./playerMenu.js"
+import {logged_as} from "./duoGame.js"
+
+let cardsToSpawn = null
 
 export async function load(game){
     const response = await fetch("game.html")
     const text = await response.text();
     document.body.innerHTML = text;
-
-    console.log("DADASd")
     document.getElementById("playGroundContOne").append(useCard(game.card))
-// const objects = [
-//     { element: "Energy", effect: { Atk: 10 } },
-//     { element: "Wood", effect: { Add: 4 } },
-//     { element: "Fire", effect: "Stun" },
-//     { element: "Water", effect: "Flow" },
-//     { element: "Air", effect: { Atk: 10 } },
-//     { element: "Earth", effect: { Add: 4 } },
+    document.getElementById("inputNewCard").innerText = game.cards
 
-//     { element: "Energy", effect: { Atk: 10 } },
-//     { element: "Wood", effect: { Add: 4 } },
-//     { element: "Fire", effect: "Stun" },
-//     { element: "Water", effect: "Flow" },
-//     { element: "Air", effect: { Atk: 10 } },
-//     { element: "Earth", effect: { Add: 4 } },
-
-//     { element: "Energy", effect: { Atk: 10 } },
-//     { element: "Wood", effect: { Add: 4 } },
-//     { element: "Fire", effect: "Stun" },
-//     { element: "Water", effect: "Flow" },
-//     { element: "Air", effect: { Atk: 10 } },
-//     { element: "Earth", effect: { Add: 4 } },
-// ];
-
-// document.getElementById("bth").addEventListener("click", function(){
-//     console.log(globalRoom)
-//     console.log(globalToken)
-//     globalRoom.leave(globalToken)
-// })
-
-
-function useCard(card){
-    const divCard = createElementWithClass("div", "centerCard");
-    const divLeftElement = createElementWithClass("div", "contNumber");
-    const pLeft = createElementWithClass("p", "number");
-    const divCenterElement = createElementWithClass("div", "contCenter");
-    const divRightElement = createElementWithClass("div", "contNumber");
-    const pRight = createElementWithClass("p", "number");
-
-    return creationCard(card, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-const containerOne = document.getElementById("containerOne")
-
-// function respawnCards() {
-//     // containerThree.innerHTML = '';
-//     // containerOne.innerHTML = '';
-//     let overlapWidth = 50;
-//     const totalCardWidth = (objects.length - 1) * (140 - overlapWidth) + 140;
-
-//     if (totalCardWidth > containerThree.offsetWidth) {
-//         overlapWidth = (objects.length * 140 - containerThree.offsetWidth) / (objects.length - 1);
-//         if (overlapWidth < 10) overlapWidth = 10;
-//     }
-
-
-//     objects.forEach((obj, index) => {
-//         containerThree.append(addCard(obj, index, objects.length, overlapWidth));
-//     });
-
-//     objects.forEach((obj, index) => {
-//         containerOne.append(enemyCard(index, objects.length, overlapWidth));
-//     });
-// }
-
-function renderCards() {
-    let containerThreeCard = containerThree.getElementsByClassName("card")
-    let containerOneCard = containerOne.getElementsByClassName("enemyCard")
-
-    let overlapWidth = 50;
-    const totalCardWidth = (containerThreeCard.length - 1) * (140 - overlapWidth) + 140;
-
-    if (totalCardWidth > containerThree.offsetWidth) {
-        overlapWidth = (containerThreeCard.length * 140 - containerThree.offsetWidth) / (containerThreeCard.length - 1);
-        if (overlapWidth < 10) overlapWidth = 10;
-    }
-    console.log(1)
-
-    for(let [index, element] of Object.entries(containerThreeCard)){
-        setPosition(element ,index , containerThreeCard.length, overlapWidth)
+    if(cardsToSpawn != null){
+        spawnPlayersCards(cardsToSpawn)
+        console.log(cardsToSpawn)
     }
 
-    for(let [index, element] of Object.entries(containerOneCard)){
-        setPosition(element ,index , containerOneCard.length, overlapWidth)
+    let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
+    let resultPlayers = game.players.splice(mapPlayers, 1);
+
+    spawnEnemyCards(resultPlayers[0].cards)
+
+    if(resultPlayers[1]){
+        document.getElementById("playerThree").append(numberEnemyCard(resultPlayers[1].cards, "left"));
     }
+    if(resultPlayers[2]){
+        document.getElementById("playerFour").append(numberEnemyCard(resultPlayers[2].cards, "right"));
+    }
+
+    window.addEventListener('resize', renderCards);
 }
-
-window.addEventListener('resize', renderCards);
-
-// respawnCards();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function enemyCard(index, total, overlapWidth) {
-    const divCardEnemy = createElementWithClass("div", "enemyCard");
-    const divLeftElement = createElementWithClass("div", "contNumber");
-    const divCenterElement = createElementWithClass("div", "contCenter");
-    const divRightElement = createElementWithClass("div", "contNumber");
-
-    divLeftElement.innerHTML = `<ion-icon class="enemy" name="skull-outline"></ion-icon>`;
-    divCenterElement.innerHTML = `<ion-icon class="enemy" name="skull-outline"></ion-icon>`;
-    divRightElement.innerHTML = `<ion-icon class="enemy" name="skull-outline"></ion-icon>`;
-
-    setPosition(divCardEnemy, index, total, overlapWidth)
-
-    divCardEnemy.append(divLeftElement, divCenterElement, divRightElement);
-    return divCardEnemy;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function numberEnemyCard(num, side){
     const divCardEnemy = createElementWithClass("div", "enemyLeftAndRight");
@@ -169,25 +46,20 @@ function numberEnemyCard(num, side){
     divCardEnemy.append(divLeftElement, divCenterElement, divRightElement);
     return divCardEnemy;
 }
-    document.getElementById("playerThree").append(numberEnemyCard(22, "left"));
-    document.getElementById("playerFour").append(numberEnemyCard(22, "right"));
 
 
 
+export function update(newTurn){
+    document.getElementById("playGroundContOne").innerHTML = ""
+    document.getElementById("playGroundContOne").append(useCard(newTurn.card))
 
+    let mapPlayers = newTurn.players.map(item => item.id).indexOf(logged_as.id);
+    let resultPlayers = newTurn.players.splice(mapPlayers, 1);
+    spawnEnemyCards(resultPlayers[0].cards)
 
+    document.getElementById("inputNewCard").innerText = newTurn.cards
 
-//! aaa
-
-
-    const newCard = document.getElementById("newCard");
-    const inputNewCard = document.getElementById("inputNewCard");
-    let numa = 44;
-    
-    newCard.addEventListener("click", function(){
-        numa--; // Зменшує значення numa на 1
-        inputNewCard.innerText = numa;
-    });
+    console.log(newTurn)
 }
 
 function addCard(obj, index, total, overlapWidth) {
@@ -207,18 +79,57 @@ function addCard(obj, index, total, overlapWidth) {
         }, 100);
     }); 
 
-    // globalRoom
     divCard.addEventListener("click", function(){
         fetch(`https://duo.shuttleapp.rs/api/rooms/${globalRoom.id}/game/play/${index}`, {method: "POST", headers: {"Authorization": globalToken}})
-        .then(result => {
-            if(result.status === 200){
-                
-            }
-        })
     })
 
     setPosition(divCard, index, total, overlapWidth)
     return creationCard(obj, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
+}
+
+function enemyCard(index, total, overlapWidth) {
+    const divCardEnemy = createElementWithClass("div", "enemyCard");
+    const divLeftElement = createElementWithClass("div", "contNumber");
+    const divCenterElement = createElementWithClass("div", "contCenter");
+    const divRightElement = createElementWithClass("div", "contNumber");
+
+    divLeftElement.innerHTML = `<ion-icon class="enemy" name="skull-outline"></ion-icon>`;
+    divCenterElement.innerHTML = `<ion-icon class="enemy" name="skull-outline"></ion-icon>`;
+    divRightElement.innerHTML = `<ion-icon class="enemy" name="skull-outline"></ion-icon>`;
+
+    setPosition(divCardEnemy, index, total, overlapWidth)
+
+    divCardEnemy.append(divLeftElement, divCenterElement, divRightElement);
+    return divCardEnemy;
+}
+
+function spawnEnemyCards(cardLength){
+    const containerOne = document.getElementById("containerOne")
+    if(containerThree !== null){
+        containerOne.innerHTML = '';
+        let overlapWidth = 50;
+        const totalCardWidth = (cardLength - 1) * (140 - overlapWidth) + 140;
+    
+        if (totalCardWidth > containerThree.offsetWidth) {
+            overlapWidth = (cardLength * 140 - containerThree.offsetWidth) / (cardLength - 1);
+            if (overlapWidth < 10) overlapWidth = 10;
+        }
+    
+        for(let i = 0; i < cardLength; i++){
+            containerOne.append(enemyCard(i, cardLength, overlapWidth));
+        }
+    }
+}
+
+function useCard(card){
+    const divCard = createElementWithClass("div", "centerCard");
+    const divLeftElement = createElementWithClass("div", "contNumber");
+    const pLeft = createElementWithClass("p", "number");
+    const divCenterElement = createElementWithClass("div", "contCenter");
+    const divRightElement = createElementWithClass("div", "contNumber");
+    const pRight = createElementWithClass("p", "number");
+
+    return creationCard(card, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
 }
 
 function creationCard(obj, elementDiv, left, center, right, pL, pR){
@@ -283,15 +194,6 @@ function createElementWithClass(tag, className) {
     return element;
 }
 
-function setPosition(divCard ,index, total, overlapWidth){
-    const cardWidth = 140;
-    const deckWidth = (total - 1) * (cardWidth - overlapWidth) + cardWidth;
-    const startPosition = `calc(50% - ${deckWidth / 2}px)`;
-
-    divCard.style.left = `calc(${startPosition} + ${index * (cardWidth - overlapWidth)}px)`;
-    divCard.style.zIndex = index;
-}
-
 function double(firstElement, secondElement) {
     firstElement.classList.remove("number");
     secondElement.classList.remove("number");
@@ -299,14 +201,10 @@ function double(firstElement, secondElement) {
     secondElement.classList.add("doubleNumber");
 }
 
-
 export function spawnPlayersCards(cards) {
     const containerThree = document.getElementById("containerThree");
-    console.log(containerThree)
     if(containerThree !== null){
-        console.log(cards)
         containerThree.innerHTML = '';
-        // containerOne.innerHTML = '';
         let overlapWidth = 50;
         const totalCardWidth = (cards.length - 1) * (140 - overlapWidth) + 140;
     
@@ -318,11 +216,39 @@ export function spawnPlayersCards(cards) {
     
         cards.forEach((obj, index) => {
             containerThree.append(addCard(obj, index, cards.length, overlapWidth));
-            console.log(1)
         });
+    }else{
+        cardsToSpawn = cards
+    }
+}
+
+function setPosition(divCard ,index, total, overlapWidth){
+    const cardWidth = 140;
+    const deckWidth = (total - 1) * (cardWidth - overlapWidth) + cardWidth;
+    const startPosition = `calc(50% - ${deckWidth / 2}px)`;
+
+    divCard.style.left = `calc(${startPosition} + ${index * (cardWidth - overlapWidth)}px)`;
+    divCard.style.zIndex = index;
+}
+
+function renderCards() {
+    let containerThreeCard = containerThree.getElementsByClassName("card")
+    let containerOneCard = containerOne.getElementsByClassName("enemyCard")
+
+    let overlapWidth = 50;
+    const totalCardWidth = (containerThreeCard.length - 1) * (140 - overlapWidth) + 140;
+
+    if (totalCardWidth > containerThree.offsetWidth) {
+        overlapWidth = (containerThreeCard.length * 140 - containerThree.offsetWidth) / (containerThreeCard.length - 1);
+        if (overlapWidth < 10) overlapWidth = 10;
+    }
+    console.log(1)
+
+    for(let [index, element] of Object.entries(containerThreeCard)){
+        setPosition(element ,index , containerThreeCard.length, overlapWidth)
     }
 
-    // objects.forEach((obj, index) => {
-    //     containerOne.append(enemyCard(index, objects.length, overlapWidth));
-    // });
+    for(let [index, element] of Object.entries(containerOneCard)){
+        setPosition(element ,index , containerOneCard.length, overlapWidth)
+    }
 }

@@ -1,18 +1,3 @@
-/* body{
-    background-image: url(/src/img/west.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width:100vw;;
-    overflow-x: hidden;
-    user-select: none;
-} */
-
 #gameContainer{
     height: 100%;
     width: 100%;
@@ -81,18 +66,22 @@
 }
 
 .contNumber:nth-child(1) p.doubleNumber{
+    font-size: 32px;
     transform: translate(12px, -88px);
 }
 
 .contNumber:nth-last-child(1) p.doubleNumber{
+    font-size: 32px;
     transform: translate(-42px, 56px);
 }
 
 .contNumber:nth-child(1) ion-icon{
+    font-size: 32px;
     transform: translate( 12px, -90px);
 }
 
 .contNumber:nth-last-child(1) ion-icon{
+    font-size: 32px;
     transform: translate(-40px, 54px);
 }
 

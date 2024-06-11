@@ -41,7 +41,6 @@ export class WebSocketManager {
                     duoGame.logged_asSet(await  Profile.load(data.Ready.uuid));
                     await activeMenu(data.Ready);
                     for (const element of this.events_buffer) {
-                        console.log(element)
                         await process(element);
                     }
                     this.ready = true
@@ -66,7 +65,7 @@ export class WebSocketManager {
                     }else if(data.GameStarted){
                         await game.load(data.GameStarted)
                     }else if(data.GameNewTurn){
-                        // game.load(data.GameNewTurn)
+                        game.update(data.GameNewTurn)
                     }else if(data.GamePlayerCards){
                         game.spawnPlayersCards(data.GamePlayerCards)
                     }

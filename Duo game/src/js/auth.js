@@ -103,7 +103,6 @@ export async function load(){
                 duoGame.setCookie("cookieToken", res, 7)
                 gate(res)
                 duoGame.getCookie("cookieToken")
-                console.log(duoGame.getCookie("cookieToken"))
             }
         })
     });
