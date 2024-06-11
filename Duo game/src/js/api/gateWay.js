@@ -13,8 +13,7 @@ export class WebSocketManager {
         this.url = url;
         this.socket = null;
         this.ready = false;
-        this.room_to_load = null;
-        this.gameToLoad = null;
+        this.events_buffer = new Array();
     }
 
     async openWebSocket() {
@@ -41,41 +40,38 @@ export class WebSocketManager {
                 if (data.Ready) {
                     duoGame.logged_asSet(await  Profile.load(data.Ready.uuid));
                     await activeMenu(data.Ready);
-                    if (this.room_to_load != null) {
-                        await roomCreateGateWay(this.room_to_load);
+                    for (const element of this.events_buffer) {
+                        console.log(element)
+                        await process(element);
                     }
-                    if (this.gameToLoad != null) {
-                        await game.load(this.gameToLoad);
-                    }
-                    this.ready = true;
-                } else if (data.RoomCreate) {
-                    if (this.ready == false) { 
-                        this.room_to_load = data.RoomCreate
-                    }else {
-                        await roomCreateGateWay(data.RoomCreate);
-                    }
-                }else if(data.RoomUpdate){
-                    playerMenu.roomUpdate(data.RoomUpdate)
-                }else if (data.RoomPlayerNew) {
-                    let newUser = await Profile.load(data.RoomPlayerNew.id);
-                    playerMenu.newPlayer(newUser)
-                }else if(data.RoomPlayerUpdate){
-                    playerMenu.updatePlayerRoom(data.RoomPlayerUpdate)
-                }else if(data.RoomPlayerLeft){
-                    playerMenu.leavePlayerRoom(data.RoomPlayerLeft)
-                }else if(data.Error === "InvalidToken"){
-                    auth.load()
-                }else if(data.GameStarted){
-                    if (this.ready == false) { 
-                        this.gameToLoad = data.GameStarted
-                    }else {
-                        await game.load(data.GameStarted)
-                    }
-                }else if(data.GameNewTurn){
-                    // game.load(data.GameNewTurn)
-                }else if(data.GamePlayerCards){
-                    game.spawnPlayersCards(data.GamePlayerCards)
+                    this.ready = true
+                } else {
+                    this.events_buffer.push(data)
+                    return
                 }
+                async function process(data) {
+                    if (data.RoomCreate) {
+                        await roomCreateGateWay(data.RoomCreate);
+                    }else if(data.RoomUpdate){
+                        playerMenu.roomUpdate(data.RoomUpdate)
+                    }else if (data.RoomPlayerNew) {
+                        let newUser = await Profile.load(data.RoomPlayerNew.id);
+                        playerMenu.newPlayer(newUser)
+                    }else if(data.RoomPlayerUpdate){
+                        playerMenu.updatePlayerRoom(data.RoomPlayerUpdate)
+                    }else if(data.RoomPlayerLeft){
+                        playerMenu.leavePlayerRoom(data.RoomPlayerLeft)
+                    }else if(data.Error === "InvalidToken"){
+                        auth.load()
+                    }else if(data.GameStarted){
+                        await game.load(data.GameStarted)
+                    }else if(data.GameNewTurn){
+                        // game.load(data.GameNewTurn)
+                    }else if(data.GamePlayerCards){
+                        game.spawnPlayersCards(data.GamePlayerCards)
+                    }
+                } 
+                process(data)
             });
             this.socket.addEventListener('close', () => { 
                 console.log('Disconnected from WebSocket server'); 

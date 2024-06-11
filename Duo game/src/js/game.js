@@ -52,110 +52,6 @@ function useCard(card){
 
 
 
-function addCard(obj, index, total, overlapWidth) {
-    const divCard = createElementWithClass("div", "card");
-    const divLeftElement = createElementWithClass("div", "contNumber");
-    const pLeft = createElementWithClass("p", "number");
-    const divCenterElement = createElementWithClass("div", "contCenter");
-    const divRightElement = createElementWithClass("div", "contNumber");
-    const pRight = createElementWithClass("p", "number");
-
-    divCard.addEventListener('mouseover', () => {
-        divCard.classList.add('persistent-hover');
-    });
-    divCard.addEventListener('mouseleave', () => {
-        setTimeout(() => {
-            divCard.classList.remove('persistent-hover');
-        }, 100);
-    });
-
-    setPosition(divCard, index, total, overlapWidth)
-    return creationCard(obj, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
-}
-
-function creationCard(obj, elementDiv, left, center, right, pL, pR){
-    switch (obj.element) {
-        case "Air":
-            elementDiv.style.background = "lightskyblue";
-            elementDiv.style.color = "lightskyblue";
-            break;
-        case "Wood":
-            elementDiv.style.background = "sienna";
-            elementDiv.style.color = "sienna";
-            break;
-        case "Water":
-            elementDiv.style.background = "steelblue";
-            elementDiv.style.color = "steelblue";
-            break;
-        case "Fire":
-            elementDiv.style.background = "red";
-            elementDiv.style.color = "red";
-            break;
-        case "Energy":
-            elementDiv.style.background = "orange";
-            elementDiv.style.color = "orange";
-            break;
-        case "Earth":
-            elementDiv.style.background = "saddlebrown";
-            elementDiv.style.color = "saddlebrown";
-            break;
-    }
-
-    if (obj.effect.Atk) {
-        center.innerText = obj.element;
-        pL.innerText = obj.effect.Atk;
-        pR.innerText = obj.effect.Atk;
-        if (obj.effect.Atk >= 10) {
-            double(pL, pR);
-        }
-    } else if (obj.effect.Add) {
-        center.innerHTML = `<ion-icon name="dice-outline"></ion-icon>`;
-        pL.innerText = `+${obj.effect.Add}`;
-        pR.innerText = `+${obj.effect.Add}`;
-        double(pL, pR);
-    } else if (obj.effect === "Stun") {
-        center.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
-        pL.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
-        pR.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
-    } else if (obj.effect === "Flow") {
-        center.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
-        pL.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
-        pR.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
-    }
-
-    left.append(pL);
-    right.append(pR);
-    elementDiv.append(left, center, right);
-    return elementDiv;
-}
-
-function createElementWithClass(tag, className) {
-    const element = document.createElement(tag);
-    element.classList.add(className);
-    return element;
-}
-
-function double(firstElement, secondElement) {
-    firstElement.classList.remove("number");
-    secondElement.classList.remove("number");
-    firstElement.classList.add("doubleNumber");
-    secondElement.classList.add("doubleNumber");
-}
-
-function setPosition(divCard ,index, total, overlapWidth){
-    const cardWidth = 140;
-    const deckWidth = (total - 1) * (cardWidth - overlapWidth) + cardWidth;
-    const startPosition = `calc(50% - ${deckWidth / 2}px)`;
-
-    divCard.style.left = `calc(${startPosition} + ${index * (cardWidth - overlapWidth)}px)`;
-    divCard.style.zIndex = index;
-}
-
-
-
-
-
-
 
 
 
@@ -189,17 +85,17 @@ const containerOne = document.getElementById("containerOne")
 // }
 
 function renderCards() {
+    let containerThreeCard = containerThree.getElementsByClassName("card")
+    let containerOneCard = containerOne.getElementsByClassName("enemyCard")
+
     let overlapWidth = 50;
-    const totalCardWidth = (objects.length - 1) * (140 - overlapWidth) + 140;
+    const totalCardWidth = (containerThreeCard.length - 1) * (140 - overlapWidth) + 140;
 
     if (totalCardWidth > containerThree.offsetWidth) {
-        overlapWidth = (objects.length * 140 - containerThree.offsetWidth) / (objects.length - 1);
+        overlapWidth = (containerThreeCard.length * 140 - containerThree.offsetWidth) / (containerThreeCard.length - 1);
         if (overlapWidth < 10) overlapWidth = 10;
     }
     console.log(1)
-
-    let containerThreeCard = containerThree.getElementsByClassName("card")
-    let containerOneCard = containerOne.getElementsByClassName("enemyCard")
 
     for(let [index, element] of Object.entries(containerThreeCard)){
         setPosition(element ,index , containerThreeCard.length, overlapWidth)
@@ -294,25 +190,125 @@ function numberEnemyCard(num, side){
     });
 }
 
+function addCard(obj, index, total, overlapWidth) {
+    const divCard = createElementWithClass("div", "card");
+    const divLeftElement = createElementWithClass("div", "contNumber");
+    const pLeft = createElementWithClass("p", "number");
+    const divCenterElement = createElementWithClass("div", "contCenter");
+    const divRightElement = createElementWithClass("div", "contNumber");
+    const pRight = createElementWithClass("p", "number");
+
+    divCard.addEventListener('mouseover', () => {
+        divCard.classList.add('persistent-hover');
+    });
+    divCard.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+            divCard.classList.remove('persistent-hover');
+        }, 100);
+    });
+
+    setPosition(divCard, index, total, overlapWidth)
+    return creationCard(obj, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
+}
+
+function creationCard(obj, elementDiv, left, center, right, pL, pR){
+    switch (obj.element) {
+        case "Air":
+            elementDiv.style.background = "lightskyblue";
+            elementDiv.style.color = "lightskyblue";
+            break;
+        case "Wood":
+            elementDiv.style.background = "sienna";
+            elementDiv.style.color = "sienna";
+            break;
+        case "Water":
+            elementDiv.style.background = "steelblue";
+            elementDiv.style.color = "steelblue";
+            break;
+        case "Fire":
+            elementDiv.style.background = "red";
+            elementDiv.style.color = "red";
+            break;
+        case "Energy":
+            elementDiv.style.background = "orange";
+            elementDiv.style.color = "orange";
+            break;
+        case "Earth":
+            elementDiv.style.background = "saddlebrown";
+            elementDiv.style.color = "saddlebrown";
+            break;
+    }
+
+    if (obj.effect.Atk) {
+        center.innerText = obj.element;
+        pL.innerText = obj.effect.Atk;
+        pR.innerText = obj.effect.Atk;
+        if (obj.effect.Atk >= 10) {
+            double(pL, pR);
+        }
+    } else if (obj.effect.Add) {
+        center.innerHTML = `<ion-icon name="dice-outline"></ion-icon>`;
+        pL.innerText = `+${obj.effect.Add}`;
+        pR.innerText = `+${obj.effect.Add}`;
+        double(pL, pR);
+    } else if (obj.effect === "Stun") {
+        center.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
+        pL.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
+        pR.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
+    } else if (obj.effect === "Flow") {
+        center.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
+        pL.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
+        pR.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
+    }
+
+    left.append(pL);
+    right.append(pR);
+    elementDiv.append(left, center, right);
+    return elementDiv;
+}
+
+function createElementWithClass(tag, className) {
+    const element = document.createElement(tag);
+    element.classList.add(className);
+    return element;
+}
+
+function setPosition(divCard ,index, total, overlapWidth){
+    const cardWidth = 140;
+    const deckWidth = (total - 1) * (cardWidth - overlapWidth) + cardWidth;
+    const startPosition = `calc(50% - ${deckWidth / 2}px)`;
+
+    divCard.style.left = `calc(${startPosition} + ${index * (cardWidth - overlapWidth)}px)`;
+    divCard.style.zIndex = index;
+}
+
+function double(firstElement, secondElement) {
+    firstElement.classList.remove("number");
+    secondElement.classList.remove("number");
+    firstElement.classList.add("doubleNumber");
+    secondElement.classList.add("doubleNumber");
+}
+
 
 export function spawnPlayersCards(cards) {
     const containerThree = document.getElementById("containerThree");
-    // console.log(containerThree)
-    if(containerThree === null){
+    console.log(containerThree)
+    if(containerThree !== null){
         console.log(cards)
         containerThree.innerHTML = '';
         // containerOne.innerHTML = '';
         let overlapWidth = 50;
-        const totalCardWidth = (objects.length - 1) * (140 - overlapWidth) + 140;
+        const totalCardWidth = (cards.length - 1) * (140 - overlapWidth) + 140;
     
         if (totalCardWidth > containerThree.offsetWidth) {
-            overlapWidth = (objects.length * 140 - containerThree.offsetWidth) / (objects.length - 1);
+            overlapWidth = (cards.length * 140 - containerThree.offsetWidth) / (cards.length - 1);
             if (overlapWidth < 10) overlapWidth = 10;
         }
     
     
         cards.forEach((obj, index) => {
             containerThree.append(addCard(obj, index, cards.length, overlapWidth));
+            console.log(1)
         });
     }
 
