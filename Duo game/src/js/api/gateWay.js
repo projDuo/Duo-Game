@@ -45,7 +45,7 @@ export class WebSocketManager {
                         await process(element);
                     }
                     this.ready = true
-                } else {
+                } else if (this.ready === false) {
                     this.events_buffer.push(data)
                     return
                 }

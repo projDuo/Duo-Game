@@ -205,7 +205,17 @@ function addCard(obj, index, total, overlapWidth) {
         setTimeout(() => {
             divCard.classList.remove('persistent-hover');
         }, 100);
-    });
+    }); 
+
+    // globalRoom
+    divCard.addEventListener("click", function(){
+        fetch(`https://duo.shuttleapp.rs/api/rooms/${globalRoom.id}/game/play/${index}`, {method: "POST", headers: {"Authorization": globalToken}})
+        .then(result => {
+            if(result.status === 200){
+                
+            }
+        })
+    })
 
     setPosition(divCard, index, total, overlapWidth)
     return creationCard(obj, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
