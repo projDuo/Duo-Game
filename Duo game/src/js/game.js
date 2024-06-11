@@ -8,8 +8,13 @@ export async function load(game){
     const response = await fetch("game.html")
     const text = await response.text();
     document.body.innerHTML = text;
+    const inputNewCard = document.getElementById("inputNewCard")
     document.getElementById("playGroundContOne").append(useCard(game.card))
-    document.getElementById("inputNewCard").innerText = game.cards
+    inputNewCard.innerText = game.cards
+
+    document.getElementById("newCard").addEventListener("click", function(){
+        fetch(`https://duo.shuttleapp.rs/api/rooms/${globalRoom.id}/game/play`, {method: "POST", headers: {"Authorization": globalToken}})
+    })
 
     if(cardsToSpawn != null){
         spawnPlayersCards(cardsToSpawn)
@@ -17,17 +22,16 @@ export async function load(game){
     }
 
     let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
-    let resultPlayers = game.players.splice(mapPlayers, 1);
+    game.players.splice(mapPlayers, 1);
 
-    spawnEnemyCards(resultPlayers[0].cards)
+    spawnEnemyCards(game.players[0].cards)
 
-    if(resultPlayers[1]){
-        document.getElementById("playerThree").append(numberEnemyCard(resultPlayers[1].cards, "left"));
+    if(game.players[1]){
+        document.getElementById("playerThree").append(numberEnemyCard(game.players[1].cards, "left"));
     }
-    if(resultPlayers[2]){
-        document.getElementById("playerFour").append(numberEnemyCard(resultPlayers[2].cards, "right"));
+    if(game.players[2]){
+        document.getElementById("playerFour").append(numberEnemyCard(game.players[2].cards, "right"));
     }
-
     window.addEventListener('resize', renderCards);
 }
 
@@ -54,12 +58,22 @@ export function update(newTurn){
     document.getElementById("playGroundContOne").append(useCard(newTurn.card))
 
     let mapPlayers = newTurn.players.map(item => item.id).indexOf(logged_as.id);
-    let resultPlayers = newTurn.players.splice(mapPlayers, 1);
-    spawnEnemyCards(resultPlayers[0].cards)
+    newTurn.players.splice(mapPlayers, 1);
+    spawnEnemyCards(newTurn.players[0].cards)
 
     document.getElementById("inputNewCard").innerText = newTurn.cards
 
-    console.log(newTurn)
+    try{
+        document.getElementById("playerThree").innerHTML = ""
+        document.getElementById("playerFour").innerHTML = ""
+
+        if(newTurn.players[1]){
+            document.getElementById("playerThree").append(numberEnemyCard(newTurn.players[1].cards, "left"));
+        }
+        if(newTurn.players[2]){
+            document.getElementById("playerFour").append(numberEnemyCard(newTurn.players[2].cards, "right"));
+        }
+    }catch{}
 }
 
 function addCard(obj, index, total, overlapWidth) {
