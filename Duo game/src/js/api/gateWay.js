@@ -68,6 +68,8 @@ export class WebSocketManager {
                         game.update(data.GameNewTurn)
                     }else if(data.GamePlayerCards){
                         game.spawnPlayersCards(data.GamePlayerCards)
+                    }else if(data.GameOver){
+                        game.GameOver(data.GameOver)
                     }
                 } 
                 process(data)

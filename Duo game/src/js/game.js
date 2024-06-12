@@ -1,6 +1,7 @@
 import { globalToken } from "./auth.js";
 import {globalRoom} from "./playerMenu.js"
 import {logged_as} from "./duoGame.js"
+import { Profile } from "./api/profile.js";
 
 let cardsToSpawn = null
 
@@ -18,7 +19,7 @@ export async function load(game){
 
     if(cardsToSpawn != null){
         spawnPlayersCards(cardsToSpawn)
-        console.log(cardsToSpawn)
+        // console.log(cardsToSpawn)
     }
 
     let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
@@ -32,6 +33,15 @@ export async function load(game){
     if(game.players[2]){
         document.getElementById("playerFour").append(numberEnemyCard(game.players[2].cards, "right"));
     }
+
+    if(game.players.id === logged_as.id){
+        document.getElementById("containerOne").classList.remove("activePlayersOne")
+        document.getElementById("containerThree").classList.add("activePlayersThree")
+    }else{
+        document.getElementById("containerThree").classList.remove("activePlayersThree")
+        document.getElementById("containerOne").classList.add("activePlayersOne")
+    }
+
     window.addEventListener('resize', renderCards);
 }
 
@@ -51,11 +61,17 @@ function numberEnemyCard(num, side){
     return divCardEnemy;
 }
 
-
-
 export function update(newTurn){
     document.getElementById("playGroundContOne").innerHTML = ""
     document.getElementById("playGroundContOne").append(useCard(newTurn.card))
+
+    if(newTurn.players[newTurn.turn].id === logged_as.id){
+        document.getElementById("containerOne").classList.remove("activePlayersOne")
+        document.getElementById("containerThree").classList.add("activePlayersThree")
+    }else{
+        document.getElementById("containerThree").classList.remove("activePlayersThree")
+        document.getElementById("containerOne").classList.add("activePlayersOne")
+    }
 
     let mapPlayers = newTurn.players.map(item => item.id).indexOf(logged_as.id);
     newTurn.players.splice(mapPlayers, 1);
@@ -147,6 +163,7 @@ function useCard(card){
 }
 
 function creationCard(obj, elementDiv, left, center, right, pL, pR){
+
     switch (obj.element) {
         case "Air":
             elementDiv.style.background = "lightskyblue";
@@ -186,11 +203,11 @@ function creationCard(obj, elementDiv, left, center, right, pL, pR){
         pL.innerText = `+${obj.effect.Add}`;
         pR.innerText = `+${obj.effect.Add}`;
         double(pL, pR);
-    } else if (obj.effect === "Stun") {
+    } else if (obj.effect === "Flow") {
         center.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
         pL.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
         pR.innerHTML = `<ion-icon class="number" name="sync-outline"></ion-icon>`;
-    } else if (obj.effect === "Flow") {
+    } else if (obj.effect === "Stun") {
         center.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
         pL.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
         pR.innerHTML = `<ion-icon class="number" name="flash-outline"></ion-icon>`;
@@ -265,4 +282,13 @@ function renderCards() {
     for(let [index, element] of Object.entries(containerOneCard)){
         setPosition(element ,index , containerOneCard.length, overlapWidth)
     }
+}
+
+export async function GameOver(value){
+    let playerWin = await Profile.load(value[0].id)
+    document.getElementById("playerWin").innerText = playerWin.display_name
+    document.getElementById("blockWin").classList.add("active")
+    document.getElementById("exitButton").addEventListener("click", function() {
+        location.reload();
+    });
 }
