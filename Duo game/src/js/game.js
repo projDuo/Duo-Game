@@ -9,9 +9,7 @@ export async function load(game){
     const response = await fetch("game.html")
     const text = await response.text();
     document.body.innerHTML = text;
-    const inputNewCard = document.getElementById("inputNewCard")
     document.getElementById("playGroundContOne").append(useCard(game.card))
-    inputNewCard.innerText = game.cards
 
     document.getElementById("newCard").addEventListener("click", function(){
         fetch(`https://duo.shuttleapp.rs/api/rooms/${globalRoom.id}/game/play`, {method: "POST", headers: {"Authorization": globalToken}})
@@ -19,7 +17,7 @@ export async function load(game){
 
     if(cardsToSpawn != null){
         spawnPlayersCards(cardsToSpawn)
-        // console.log(cardsToSpawn)
+        console.log(cardsToSpawn)
     }
 
     let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
@@ -76,8 +74,6 @@ export function update(newTurn){
     let mapPlayers = newTurn.players.map(item => item.id).indexOf(logged_as.id);
     newTurn.players.splice(mapPlayers, 1);
     spawnEnemyCards(newTurn.players[0].cards)
-
-    document.getElementById("inputNewCard").innerText = newTurn.cards
 
     try{
         document.getElementById("playerThree").innerHTML = ""
