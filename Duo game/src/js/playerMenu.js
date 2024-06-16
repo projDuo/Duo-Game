@@ -19,7 +19,7 @@ export async function load(){
         rooms.create(globalToken, nameRoom, isIcon, passwordRoom, parseInt(maxPlayersRoom));
     });
 
-    let isIcon = false;
+    let isIcon = true;
     
     document.getElementById("roomCheck").addEventListener("click", function(){
         isIcon = !isIcon;
@@ -56,12 +56,12 @@ export async function load(){
 
 
 
-    document.getElementById("Exit").addEventListener("click", function(){
+    document.getElementById("bthExit").addEventListener("click", function(){
         fetch("https://duo.shuttleapp.rs/api/auth/logout", {method: "POST", headers: {"Authorization": globalToken}})
         .then(result => {
             if(result.status === 200){
                 duoGame.setCookie("cookieToken", "", 7)
-                document.getElementById("menu").style.display = "none"
+                location.reload();
             }
         })
     })
@@ -118,24 +118,13 @@ export async function load(){
                 document.getElementById("numWins").innerText = staticUser.wins
                 document.getElementById("numTime").innerText = staticUser.cards_had
                 document.getElementById("gamePlay").innerText = staticUser.games_played
-                // document.getElementById("perWin").innerText = staticUser.points
-                // document.getElementById("aveGame").innerText = staticUser.points
+                document.getElementById("perWin").innerText = (staticUser.wins / staticUser.games_played) * 100
+                document.getElementById("aveGame").innerText = (staticUser.points / staticUser.games_played)
                 document.getElementById("mostPoints").innerText = staticUser.max_points 
                 document.getElementById("lostGame").innerText = staticUser.loses
             })
         })
 }
-
-
-
-
-
-
-
-
-
-
-
 
 export let globalRoom = ""
 let readyPlayers = 0
@@ -253,10 +242,6 @@ export function roomUpdate(roomInfo){
         startGame.disabled = true
     }
 }
-
-
-
-
 
 export async function activeMenu(){
     await load()

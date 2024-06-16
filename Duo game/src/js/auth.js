@@ -44,36 +44,52 @@ export async function load(){
             login.value = "";
         }
     });
+
+    document.getElementById("passwordUp").addEventListener("click", function(){
+        const password = document.getElementById("passwordUp")
+        if(password.value === "Password must be over 6 characters"){
+            password.value = ""
+            password.type = "password"
+        }
+    })
+
     document.getElementById("registrationForm").addEventListener('submit', function(event){
         event.preventDefault();
         const login = document.getElementById("loginUp");
         const password = document.getElementById("passwordUp");
         const confirmPassword = document.getElementById("confirmPassword");
         const correctPassword = document.getElementById("correctPassword")
-        const accountReg = new Auth(login, password)
+        if(password.length <= 6){
+            const accountReg = new Auth(login, password)
 
-        if(password.value !== confirmPassword.value){
-            correctPassword.innerText = "Please, repeat your password correctly"
-            return;
-        }
-
-        accountReg.register().then(async response => {
-            if(response.status === 200){
-                let res = await response.text()
-                duoGame.setCookie("cookieToken", res, 7)
-                gate(res)
-            }else if(response.status === 409){
-                login.value = "This login is already taken";
-                password.value = "";
-                confirmPassword.value = "";
-            }else if(response.status === 502){
-                login.value = "Server dead";
-                password.value = "Server dead";
-                confirmPassword.value = "Server dead";
-            }else{
-                console.log("Unknown error")
+            if(password.value !== confirmPassword.value){
+                correctPassword.innerText = "Please, repeat your password correctly"
+                return;
             }
-        })
+    
+            accountReg.register().then(async response => {
+                if(response.status === 200){
+                    let res = await response.text()
+                    duoGame.setCookie("cookieToken", res, 1)
+                    gate(res)
+                }else if(response.status === 409){
+                    login.value = "This login is already taken";
+                    password.value = "";
+                    confirmPassword.value = "";
+                }else if(response.status === 502){
+                    login.value = "Server dead";
+                    password.value = "Server dead";
+                    confirmPassword.value = "Server dead";
+                }else{
+                    console.log("Unknown error")
+                }
+            })
+        }else{
+            password.value = ""
+            confirmPassword.value = ""
+            password.type = "text"
+            password.value = "Password must be over 6 characters"
+        }
     });
     //! Register
     //? Login
@@ -83,28 +99,43 @@ export async function load(){
             login.value = "";
         }
     })
+
+    document.getElementById("passwordIn").addEventListener("click", function(){
+        const password = document.getElementById("passwordIn")
+        if(password.value === "Password must be over 6 characters"){
+            password.value = ""
+            password.type = "password"
+        }
+    })
+
     document.getElementById("loginForm").addEventListener('submit', function(event){
         event.preventDefault();
         const login = document.getElementById("loginIn");
         const password = document.getElementById("passwordIn");
-        const accountLog = new Auth(login, password)
+        if(password.length <= 6){
+            const accountLog = new Auth(login, password)
 
-        accountLog.auth().then(async response => {
-            if(response.status === 403){
-                document.getElementById("checkPassword").innerText = "Invalid password, please try again"
-            }else if(response.status === 404){
-                login.value = "This account does not exist"
-                password.value = ""
-            }else if(response.status === 502){
-                login.value = "Server dead";
-                password.value = "Server dead";
-            }else if(response.status === 200){ 
-                let res = await response.text()
-                duoGame.setCookie("cookieToken", res, 7)
-                gate(res)
-                duoGame.getCookie("cookieToken")
-            }
-        })
+            accountLog.auth().then(async response => {
+                if(response.status === 403){
+                    document.getElementById("checkPassword").innerText = "Invalid password, please try again"
+                }else if(response.status === 404){
+                    login.value = "This account does not exist"
+                    password.value = ""
+                }else if(response.status === 502){
+                    login.value = "Server dead";
+                    password.value = "Server dead";
+                }else if(response.status === 200){ 
+                    let res = await response.text()
+                    duoGame.setCookie("cookieToken", res, 1)
+                    gate(res)
+                    duoGame.getCookie("cookieToken")
+                }
+            })
+        }else{
+            password.value = ""
+            password.type = "text"
+            password.value = "Password must be over 6 characters"
+        }
     });
     //? Login
     //! Guest 

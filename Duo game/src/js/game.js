@@ -20,6 +20,14 @@ export async function load(game){
         console.log(cardsToSpawn)
     }
 
+    if(game.players.id === logged_as.id){
+        document.getElementById("containerOne").classList.remove("activePlayersOne")
+        document.getElementById("containerThree").classList.add("activePlayersThree")
+    }else{
+        document.getElementById("containerThree").classList.remove("activePlayersThree")
+        document.getElementById("containerOne").classList.add("activePlayersOne")
+    }
+
     let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
     game.players.splice(mapPlayers, 1);
 
@@ -30,14 +38,6 @@ export async function load(game){
     }
     if(game.players[2]){
         document.getElementById("playerFour").append(numberEnemyCard(game.players[2].cards, "right"));
-    }
-
-    if(game.players.id === logged_as.id){
-        document.getElementById("containerOne").classList.remove("activePlayersOne")
-        document.getElementById("containerThree").classList.add("activePlayersThree")
-    }else{
-        document.getElementById("containerThree").classList.remove("activePlayersThree")
-        document.getElementById("containerOne").classList.add("activePlayersOne")
     }
 
     window.addEventListener('resize', renderCards);
@@ -71,6 +71,8 @@ export function update(newTurn){
         document.getElementById("containerOne").classList.add("activePlayersOne")
     }
 
+    console.log(newTurn.players)
+
     let mapPlayers = newTurn.players.map(item => item.id).indexOf(logged_as.id);
     newTurn.players.splice(mapPlayers, 1);
     spawnEnemyCards(newTurn.players[0].cards)
@@ -94,7 +96,13 @@ function addCard(obj, index, total, overlapWidth) {
     const pLeft = createElementWithClass("p", "number");
     const divCenterElement = createElementWithClass("div", "contCenter");
     const divRightElement = createElementWithClass("div", "contNumber");
-    const pRight = createElementWithClass("p", "number");
+    const pRight = document.createElement("p");
+
+    if(obj.effect.Atk || obj.effect.Add){
+        pRight.classList.add("number")
+    }else{
+        pRight.classList.add("element")
+    }
 
     divCard.addEventListener('mouseover', () => {
         divCard.classList.add('persistent-hover');
@@ -148,12 +156,19 @@ function spawnEnemyCards(cardLength){
 }
 
 function useCard(card){
+    console.log(card)
+    console.log(isNaN(card))
     const divCard = createElementWithClass("div", "centerCard");
     const divLeftElement = createElementWithClass("div", "contNumber");
     const pLeft = createElementWithClass("p", "number");
     const divCenterElement = createElementWithClass("div", "contCenter");
     const divRightElement = createElementWithClass("div", "contNumber");
-    const pRight = createElementWithClass("p", "number");
+    const pRight = document.createElement("p")
+    if(card.effect.Atk || card.effect.Add){
+        pRight.classList.add("number")
+    }else{
+        pRight.classList.add("element")
+    }
 
     return creationCard(card, divCard, divLeftElement, divCenterElement, divRightElement, pLeft, pRight)
 }

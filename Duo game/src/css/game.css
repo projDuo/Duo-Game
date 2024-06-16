@@ -108,15 +108,10 @@
     transform: translate(-40px, 54px);
 }
 
-/* .contNumber.question:nth-child(1) ion-icon{
+.contNumber:nth-last-child(1) p.element {
     font-size: 32px;
-    transform: translate(10px, -88px);
-} */
-
-/* .contNumber.question:nth-last-child(1) ion-icon{
-    font-size: 32px;
-    transform: translate(-402px, 760px);
-} */
+    transform: translate(-5px, 5px);
+}
 
 .divContainer{
     height: 100%;
