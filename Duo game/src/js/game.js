@@ -20,24 +20,27 @@ export async function load(game){
         console.log(cardsToSpawn)
     }
 
-    if(game.players.id === logged_as.id){
+    console.log(game.players)
+
+    let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
+    let enemies = game.players.map((x) => x);
+    enemies.splice(mapPlayers, 1);
+
+    spawnEnemyCards(enemies[0].cards)
+
+    if(enemies[1]){
+        document.getElementById("playerThree").append(numberEnemyCard(game.players[1].cards, "left"));
+    }
+    if(enemies[2]){
+        document.getElementById("playerFour").append(numberEnemyCard(game.players[2].cards, "right"));
+    }
+
+    if(game.players[game.turn].id === logged_as.id){
         document.getElementById("containerOne").classList.remove("activePlayersOne")
         document.getElementById("containerThree").classList.add("activePlayersThree")
     }else{
         document.getElementById("containerThree").classList.remove("activePlayersThree")
         document.getElementById("containerOne").classList.add("activePlayersOne")
-    }
-
-    let mapPlayers = game.players.map(item => item.id).indexOf(logged_as.id);
-    game.players.splice(mapPlayers, 1);
-
-    spawnEnemyCards(game.players[0].cards)
-
-    if(game.players[1]){
-        document.getElementById("playerThree").append(numberEnemyCard(game.players[1].cards, "left"));
-    }
-    if(game.players[2]){
-        document.getElementById("playerFour").append(numberEnemyCard(game.players[2].cards, "right"));
     }
 
     window.addEventListener('resize', renderCards);
