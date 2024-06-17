@@ -2,9 +2,8 @@
 @import url('playerMenu.css');
 @import url('game.css');
 
-
 body{
-    background-image: url(/src/img/west.png);
+    background-image: url(../img/west.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;

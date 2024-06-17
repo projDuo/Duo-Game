@@ -112,7 +112,7 @@ export async function load(){
         event.preventDefault();
         const login = document.getElementById("loginIn");
         const password = document.getElementById("passwordIn");
-        if(password.length >= 6){
+        if(password.value.length >= 6){
             const accountLog = new Auth(login, password)
 
             accountLog.auth().then(async response => {

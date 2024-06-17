@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("menu").style.display = "none"
         auth.gate(cook)
     }
-
 });
 
 
