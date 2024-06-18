@@ -53,6 +53,16 @@
     border-left: solid 2px black;
 }
 
+.position a{
+    text-decoration: none;
+    color: black;
+    transition: all 0.1s ease-in-out;
+}
+
+.position a:hover{
+    color: rgb(250, 81, 2);
+}
+
 .position p{
     font-size: 20px;
     color: rgba(47,0,6,255);
