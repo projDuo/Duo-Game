@@ -167,12 +167,6 @@ export function readyGame(roomInfo, maxPlayer) {
         .then(async result => {
             if(result.status === 200){
                 document.getElementById("menu").style.display = "none";
-                async function loadGame() {
-                  const response = await fetch("game.html");
-                  const text = await response.text();
-                  document.body.innerHTML = text;
-                }
-                loadGame();
                 console.log("YAP")
             }else{
                 console.log("Error")
